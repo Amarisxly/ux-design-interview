@@ -1,0 +1,22 @@
+{
+  "name": "设计面试陪练",
+  "short_name": "面试陪练",
+  "description": "产品设计、交互设计岗位的面试模拟：一面、二面、终面，500 题，中文朗读与框架笔记。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F5F5F5",
+  "theme_color": "#FFFFFF",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "完整面试", "url": "./#flow", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "我的收藏", "url": "./#fav", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
+  ]
+}

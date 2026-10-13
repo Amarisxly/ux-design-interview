@@ -1,0 +1,962 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#2C2C2C" media="(prefers-color-scheme: dark)">
+<meta name="description" content="产品设计、交互设计岗位的面试模拟：一面、二面、终面，500 题，中文朗读与框架笔记。">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="面试陪练">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>设计面试陪练</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,300,0..1,0&display=block">
+<style>
+/* Layout: Figma 编辑器风格——点阵画布上摆放带标签的 Frame；首页像图层/属性面板，练习页每题是一个 Frame，朗读时出现蓝色选中框 */
+:root{
+  --canvas:#F5F5F5; --dot:#D9D9D9; --panel:#FFFFFF; --hover:#F5F5F5; --field:#F5F5F5;
+  --ink:#1E1E1E; --ink2:#5C5C5C; --muted:#8C8C8C; --line:#E6E6E6; --line2:#D9D9D9;
+  --sel:#0D99FF; --sel-soft:#E5F4FF; --on-sel:#FFFFFF; --comp:#9747FF; --comp-soft:#F1E9FF; --ok:#14AE5C;
+  --r1:var(--c-blue); --r2:var(--c-green); --r3:var(--c-purple);
+  --shadow:0 0 .5px rgba(0,0,0,.18),0 3px 8px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.1);
+  --f:"Inter","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --c-blue:#0D99FF; --c-blue-s:#E2F3FF; --c-green:#0AAE6E; --c-green-s:#DDF7EC; --c-purple:#9747FF; --c-purple-s:#F0E6FF;
+  --c-coral:#F2552C; --c-coral-s:#FFE7E0; --c-yellow:#FFC943; --sticky:#FFF4F5; --sticky-ink:#2F2326; --tip-card:rgba(255,255,255,.78); --tip-chip:rgba(255,255,255,.85); --tip-line:rgba(176,86,108,.16); --tip-mute:#9A7880; --tip-acc:#C25A72; --tip-plus:#4E7D5E; --tip-minus:#B05A3C;
+  --grad:linear-gradient(90deg,#0D99FF,#0ACF83 33%,#A259FF 66%,#FF7262);
+  --fd:"Inter Tight","Inter","Noto Sans SC","PingFang SC",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --canvas:#1E1E1E; --dot:#383838; --panel:#2C2C2C; --hover:#383838; --field:#383838;
+  --ink:#FFFFFF; --ink2:#C4C4C4; --muted:#9A9A9A; --line:#444444; --line2:#4F4F4F;
+  --sel:#0C8CE9; --sel-soft:#183A55; --on-sel:#FFFFFF; --comp:#A469FF; --comp-soft:#3A2A55; --ok:#1BC47D;
+  --r1:var(--c-blue); --r2:var(--c-green); --r3:var(--c-purple);
+  --shadow:0 0 .5px rgba(0,0,0,.6),0 3px 8px rgba(0,0,0,.4); --c-blue:#3DADFF; --c-blue-s:#16324A; --c-green:#2BD196; --c-green-s:#14382A; --c-purple:#B07BFF; --c-purple-s:#33244F;
+  --c-coral:#FF7A57; --c-coral-s:#4A231A; --c-yellow:#FFD466; --sticky:#2D2225; --sticky-ink:#F4E7EA; --tip-card:rgba(255,255,255,.04); --tip-chip:rgba(255,255,255,.06); --tip-line:rgba(244,190,204,.15); --tip-mute:#B5979E; --tip-acc:#EB8EA3; --tip-plus:#8CC39E; --tip-minus:#E39A7E; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --canvas:#1E1E1E; --dot:#383838; --panel:#2C2C2C; --hover:#383838; --field:#383838;
+  --ink:#FFFFFF; --ink2:#C4C4C4; --muted:#9A9A9A; --line:#444444; --line2:#4F4F4F;
+  --sel:#0C8CE9; --sel-soft:#183A55; --on-sel:#FFFFFF; --comp:#A469FF; --comp-soft:#3A2A55; --ok:#1BC47D;
+  --r1:var(--c-blue); --r2:var(--c-green); --r3:var(--c-purple);
+  --shadow:0 0 .5px rgba(0,0,0,.6),0 3px 8px rgba(0,0,0,.4); --c-blue:#3DADFF; --c-blue-s:#16324A; --c-green:#2BD196; --c-green-s:#14382A; --c-purple:#B07BFF; --c-purple-s:#33244F;
+  --c-coral:#FF7A57; --c-coral-s:#4A231A; --c-yellow:#FFD466; --sticky:#2D2225; --sticky-ink:#F4E7EA; --tip-card:rgba(255,255,255,.04); --tip-chip:rgba(255,255,255,.06); --tip-line:rgba(244,190,204,.15); --tip-mute:#B5979E; --tip-acc:#EB8EA3; --tip-plus:#8CC39E; --tip-minus:#E39A7E; color-scheme:dark}
+html,body{height:100%}
+body{background-color:var(--canvas);background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:16px 16px;color:var(--ink);font-family:var(--f);font-size:13px;line-height:20px;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;font-feature-settings:"cv11","ss01"}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--sel);outline-offset:1px}
+.ms{font-family:"Material Symbols Rounded";font-weight:normal;font-style:normal;font-size:20px;line-height:1;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:"liga";-webkit-font-feature-settings:"liga";flex:none;width:1em;overflow:hidden;font-variation-settings:"FILL" 0,"wght" 300,"GRAD" 0,"opsz" 20;user-select:none}
+.ms.sm{font-size:16px}
+.ms.fill{font-variation-settings:"FILL" 1,"wght" 300,"GRAD" 0,"opsz" 20}
+.st:hover{background:var(--hover)}
+
+/* Frame 标签：画布上 frame 左上角的名字 */
+.flabel{display:flex;align-items:center;gap:4px;font-size:11px;line-height:16px;color:var(--muted);padding:0 0 4px 1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.flabel .ms{font-size:14px}
+.flabel.comp{color:var(--comp)}
+
+/* ---------- 首页 ---------- */
+#home{max-width:560px;margin:0 auto;padding-block:0 40px;padding-inline:16px;display:flex;flex-direction:column;gap:20px}
+.appbar{display:flex;align-items:center;gap:8px;height:48px;margin:0 -16px;padding:calc(env(safe-area-inset-top,0px)) 16px 0;background:var(--panel);border-bottom:1px solid var(--line)}
+.appbar .mark{width:28px;height:28px;border-radius:6px;background:var(--ink);color:var(--panel);display:grid;place-items:center}
+.appbar .mark .ms{font-size:18px}
+.appbar .crumb{flex:1;min-width:0;display:flex;align-items:center;gap:6px;font-size:13px;white-space:nowrap;overflow:hidden}
+.appbar .crumb span{color:var(--muted)}
+.appbar .crumb h1{font-size:13px;font-weight:600;margin:0}
+.appbar .badge{font-size:11px;color:var(--muted);border:1px solid var(--line2);border-radius:4px;padding:0 6px;line-height:18px}
+.framewrap{display:flex;flex-direction:column}
+.hero{background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:20px;display:flex;flex-direction:column;gap:12px;position:relative}
+.hero h2{font-size:20px;line-height:28px;font-weight:700;margin:0;letter-spacing:-.01em}
+.hero p{margin:0;color:var(--ink2);max-width:34em}
+.hero .steps{display:flex;flex-wrap:wrap;gap:6px}
+.hero .steps span{font-size:11px;line-height:20px;padding:0 8px;border-radius:4px;background:var(--field);color:var(--ink2)}
+.fab{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px 0 8px;border:0;border-radius:5px;background:var(--sel);color:var(--on-sel);font-size:13px;font-weight:600}
+.fab:hover{filter:brightness(.94)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
+.ptitle{display:flex;align-items:center;justify-content:space-between;height:40px;padding:0 12px 0 16px;font-size:11px;font-weight:600;border-bottom:1px solid var(--line)}
+.ptitle span{font-weight:400;color:var(--muted)}
+.mods{display:flex;flex-direction:column;padding:4px 0}
+.mod{display:grid;grid-template-columns:32px 1fr auto;gap:8px;align-items:center;padding:6px 12px 6px 8px;border:0;background:none;text-align:left;width:100%;color:var(--ink);min-height:52px}
+.mod .av{width:32px;height:32px;display:grid;place-items:center;color:var(--ink2)}
+.mod b{display:block;font-size:13px;font-weight:600;line-height:18px}
+.mod span.d{display:block;color:var(--muted);font-size:11px;line-height:16px}
+.mod .cnt{display:flex;align-items:center;gap:2px;color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.settings{padding:4px 0}
+.row{display:flex;align-items:center;gap:8px;padding:8px 12px 8px 16px;min-height:44px;box-sizing:border-box}
+.row>.ms{color:var(--muted);font-size:18px}
+.row label{flex:1;min-width:0;font-size:12px;line-height:16px}
+.row small{display:block;color:var(--muted);font-size:11px;line-height:16px}
+.row select{max-width:160px;background:var(--field);border:1px solid transparent;border-radius:5px;height:28px;padding:0 6px;font-size:12px}
+.row select:hover{border-color:var(--line2)}
+.row input[type=range]{width:110px;accent-color:var(--sel)}
+.tbtn{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 10px 0 6px;border-radius:5px;border:1px solid var(--line2);background:var(--panel);font-size:12px;font-weight:500}
+/* Figma 小开关 */
+.sw{position:relative;width:28px;height:16px;flex:none}
+.sw input{position:absolute;inset:-8px;margin:0;opacity:0;cursor:pointer;z-index:1}
+.sw i{position:absolute;inset:0;border-radius:8px;background:var(--line2);transition:background .15s}
+.sw i::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:transform .15s}
+.sw input:checked+i{background:var(--sel)}
+.sw input:checked+i::after{transform:translateX(12px)}
+.sw input:focus-visible+i{outline:2px solid var(--sel);outline-offset:2px}
+.banner{display:flex;gap:10px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-left:3px solid #FFC700;border-radius:6px;padding:12px}
+.banner .ms{color:#E5A000}
+.banner b{display:block;font-size:12px;font-weight:600}
+.banner p,.banner ol{margin:2px 0 0;font-size:12px;line-height:18px;color:var(--ink2)}
+.banner ol{padding-left:16px}
+
+/* ---------- 练习页 ---------- */
+#play{position:fixed;inset:0;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;gap:4px;padding:calc(env(safe-area-inset-top,0px)) 8px 0;height:48px;box-sizing:content-box;background:var(--panel);border-bottom:1px solid var(--line)}
+.ib{width:32px;height:32px;border-radius:5px;display:grid;place-items:center;border:0;background:none;color:var(--ink2);flex:none;padding:0}
+.top .ttl{flex:1;min-width:0;padding-left:4px;display:flex;align-items:baseline;gap:8px}
+.top .ttl b{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .ttl span{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.prog{height:2px;background:var(--line)}
+.prog i{display:block;height:100%;width:0;background:var(--sel);transition:width .3s}
+.chips{display:flex;gap:2px;overflow-x:auto;padding:6px 8px;scrollbar-width:none;background:var(--panel);border-bottom:1px solid var(--line)}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:5px;border:0;background:none;color:var(--muted);font-size:12px;white-space:nowrap}
+.chip .ms{display:none}
+.chip:hover{color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--field);color:var(--ink);font-weight:600}
+.feed{flex:1;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain}
+.card{height:100%;scroll-snap-align:start;scroll-snap-stop:always;padding:20px 20px 72px;display:flex;flex-direction:column;box-sizing:border-box;max-width:660px;margin:0 auto}
+.paper{flex:1;display:flex;flex-direction:column;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:20px;box-sizing:border-box;min-height:0;overflow-y:auto;position:relative;outline:1px solid transparent;outline-offset:-1px;transition:outline-color .15s}
+/* 选中框 + 四角控制点 */
+.paper .hd{position:absolute;width:7px;height:7px;background:#fff;border:1px solid var(--sel);opacity:0;transition:opacity .15s;pointer-events:none}
+.paper .hd.a{top:-4px;left:-4px}.paper .hd.b{top:-4px;right:-4px}.paper .hd.c{bottom:-4px;left:-4px}.paper .hd.d{bottom:-4px;right:-4px}
+.card.speaking .paper{outline-color:var(--sel);border-color:var(--sel)}
+/* 题卡：外框不滚动（承载选中框和光标），内容区单独滚动，底部按钮固定 */
+.paper.qp{overflow:visible;padding:0;gap:0}
+.qp .pin{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:auto;padding:20px 20px 12px;display:flex;flex-direction:column;gap:16px;border-radius:inherit}
+.qp .foot{flex:none;display:flex;flex-direction:column;gap:10px;padding:12px 20px 16px;border-top:1px solid var(--line);background:var(--panel)}
+.qp .pin .tip{flex:none}
+.card.speaking .paper .hd{opacity:1}
+.card.speaking .flabel{color:var(--sel)}
+.meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px}
+.tag{display:inline-flex;align-items:center;gap:3px;height:20px;padding:0 6px 0 4px;border-radius:4px;background:color-mix(in srgb,var(--rc) 12%,transparent);color:var(--rc);font-weight:600}
+.tag .ms{font-size:14px}
+.cat{color:var(--ink2)}
+.num{margin-left:auto;color:var(--muted);font-variant-numeric:tabular-nums}
+.who{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.who .ms{font-size:16px}
+.card.speaking .who{color:var(--sel)}
+.card.speaking .who .ms{animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.q{font-size:clamp(20px,5.4vw,26px);line-height:1.5;font-weight:700;letter-spacing:-.01em;margin:0;text-wrap:pretty}
+.spacer{flex:1}
+/* 计时：仿 Frame 尺寸标签 */
+.clock{display:flex;align-items:center;justify-content:center;gap:8px}
+.clock .ms{display:none}
+.clock .t{background:var(--sel);color:var(--on-sel);font-size:12px;font-weight:600;line-height:20px;padding:0 6px;border-radius:3px;font-variant-numeric:tabular-nums}
+.clock .n{font-size:11px;color:var(--muted)}
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.act{display:flex;align-items:center;justify-content:center;gap:4px;height:32px;border:1px solid var(--line2);border-radius:5px;background:var(--panel);color:var(--ink);font-size:12px;font-weight:500}
+.act[aria-pressed=true]{background:var(--sel-soft);border-color:var(--sel);color:var(--sel)}
+.act[aria-pressed=true].fav .ms{font-variation-settings:"FILL" 1,"wght" 300,"GRAD" 0,"opsz" 20}
+.hint{display:flex;align-items:center;justify-content:center;gap:4px;font-size:11px;color:var(--muted);padding-top:8px}
+/* 阶段卡：组件（紫色）样式 */
+.stage .paper{justify-content:center;border-color:var(--comp);border-style:dashed}
+.stage .eyebrow{display:inline-flex;align-items:center;gap:4px;align-self:flex-start;font-size:11px;font-weight:600;color:var(--comp);background:var(--comp-soft);border-radius:4px;padding:0 6px;line-height:20px}
+.stage .eyebrow .ms{font-size:14px}
+.stage h2{font-size:24px;line-height:32px;font-weight:700;margin:0}
+.stage p{margin:0;color:var(--ink2);max-width:30em}
+.facts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.facts li{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink2)}
+.facts .ms{font-size:16px;color:var(--muted)}
+.btns{display:flex;gap:6px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 12px 0 8px;border-radius:5px;border:0;background:var(--sel);color:var(--on-sel);font-size:13px;font-weight:600}
+.btn.outl{background:var(--panel);border:1px solid var(--line2);color:var(--ink);padding:0 12px}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;height:100%;color:var(--muted);padding:24px;text-align:center}
+.empty .ms{font-size:32px}
+.snack{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 76px);transform:translateX(-50%);background:#1E1E1E;color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;z-index:9;max-width:calc(100% - 32px);box-shadow:var(--shadow)}
+/* 底部浮动工具栏（UI3） */
+.bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);display:flex;align-items:center;gap:2px;padding:4px;background:var(--panel);border-radius:12px;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+.bar .sep{width:1px;height:20px;background:var(--line);margin:0 4px}
+.nb{display:flex;align-items:center;gap:6px;height:36px;padding:0 10px;border:0;border-radius:8px;background:none;color:var(--ink);font-size:12px;font-weight:500;white-space:nowrap}
+.nb .pillic{display:grid;place-items:center}
+.nb:hover{background:var(--hover)}
+.nb[aria-pressed=true]{background:var(--sel);color:var(--on-sel)}
+
+/* ---------- 彩色元素 ---------- */
+.ms.fill{font-variation-settings:"FILL" 1,"wght" 400,"GRAD" 0,"opsz" 20}
+.appbar .mark{background:none;width:28px;height:28px;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:3px;box-sizing:border-box}
+.appbar .mark i{border-radius:50%}
+.appbar .mark i:nth-child(1){background:var(--c-coral)}.appbar .mark i:nth-child(2){background:var(--c-purple)}
+.appbar .mark i:nth-child(3){background:var(--c-blue)}.appbar .mark i:nth-child(4){background:var(--c-green)}
+.hero{overflow:visible;padding:24px 20px 20px}
+.hero h2{font-family:var(--fd);font-size:26px;line-height:34px;font-weight:800;letter-spacing:-.02em}
+.hero h2 mark{background:none;color:inherit;position:relative;white-space:nowrap}
+.hero h2 mark::after{content:"";position:absolute;left:-2px;right:-2px;bottom:2px;height:10px;background:var(--c-yellow);opacity:.55;z-index:-1;border-radius:2px}
+.hero h2{position:relative;z-index:0}
+.hero .steps span{display:inline-flex;align-items:center;gap:5px;font-weight:600}
+.hero .steps span i{width:8px;height:8px;border-radius:50%;flex:none}
+.hero .steps .s1{background:var(--c-blue-s);color:var(--c-blue)}.hero .steps .s1 i{background:var(--c-blue)}
+.hero .steps .s2{background:var(--c-green-s);color:var(--c-green)}.hero .steps .s2 i{background:var(--c-green)}
+.hero .steps .s3{background:var(--c-purple-s);color:var(--c-purple)}.hero .steps .s3 i{background:var(--c-purple)}
+/* 多人协作光标 */
+.cursor{position:absolute;display:flex;flex-direction:column;align-items:flex-start;pointer-events:none;z-index:2;animation:float 4s ease-in-out infinite}
+.cursor svg{width:16px;height:16px;fill:var(--cc);stroke:#fff;stroke-width:1.5;filter:drop-shadow(0 1px 1px rgba(0,0,0,.2))}
+.cursor span{margin:-2px 0 0 12px;background:var(--cc);color:#fff;font-size:11px;font-weight:600;line-height:18px;padding:0 6px;border-radius:2px 8px 8px 8px;white-space:nowrap}
+.hero .cursor.k1{--cc:var(--c-coral);right:18px;top:-14px}
+.hero .cursor.k2{--cc:var(--c-purple);right:92px;bottom:18px;animation-delay:-2s}
+@keyframes float{50%{transform:translate(3px,-4px)}}
+/* 彩色图标块 */
+.mod .av{border-radius:8px;background:var(--ts);color:var(--tc)}
+.mod .av .ms{font-variation-settings:"FILL" 1,"wght" 400,"GRAD" 0,"opsz" 20}
+.row>.ms{color:var(--ic,var(--muted))}
+/* 参考思路：见下方结构化便利贴 */
+/* 流程：竖向步骤线 */
+.flow{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.flow li{display:grid;grid-template-columns:22px 1fr;gap:10px;position:relative;padding-bottom:10px;font-size:13px;line-height:20px;color:var(--ink)}
+.flow li:last-child{padding-bottom:0}
+.flow li::before{content:"";position:absolute;left:10.5px;top:22px;bottom:0;width:1px;background:color-mix(in srgb,var(--rc) 35%,var(--line))}
+.flow li:last-child::before{display:none}
+.flow .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--rc);background:color-mix(in srgb,var(--rc) 12%,var(--panel));border:1px solid color-mix(in srgb,var(--rc) 40%,transparent);font-variant-numeric:tabular-nums}
+.flow li:last-child .n{background:var(--rc);color:#fff;border-color:var(--rc)}
+/* 要点：编号方块 */
+.pts{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
+.pts span{display:flex;align-items:flex-start;gap:6px;padding:7px 8px;border-radius:6px;background:var(--field);font-size:12px;line-height:17px;color:var(--ink)}
+.pts span i{flex:none;font-style:normal;font-size:10px;font-weight:700;color:var(--rc);line-height:17px;font-variant-numeric:tabular-nums}
+/* STAR 四格 */
+.star{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.star div{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:6px;background:var(--field);text-align:center}
+.star b{font-family:var(--fd);font-size:20px;line-height:24px;font-weight:800;color:var(--rc)}
+.star span{font-size:11px;color:var(--ink2);line-height:15px}
+.star .hot{background:color-mix(in srgb,var(--rc) 14%,var(--panel));outline:1px solid var(--rc)}
+.star .hot span::after{content:" · 重点";color:var(--rc);font-weight:600}
+/* 核心观点 */
+.core{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:21px;color:var(--ink)}
+.core::before{content:"";flex:none;width:3px;align-self:stretch;border-radius:2px;background:var(--rc)}
+.note2{margin:8px 0 0;font-size:12px;line-height:18px;color:var(--muted)}
+/* 题卡上的面试官光标 */
+.paper .cursor{--cc:var(--rc);right:18px;top:-12px;opacity:0;transition:opacity .2s}
+.card.speaking .paper .cursor{opacity:1}
+.tag{background:var(--rc);color:#fff}
+.who .ms{color:var(--rc)}
+.q{font-family:var(--fd);font-weight:800;letter-spacing:-.015em}
+.flabel .ms{color:var(--rc,var(--muted))}
+.stage .paper{border-color:var(--rc)}
+.stage .eyebrow{background:var(--rc);color:#fff}
+.stage h2{font-family:var(--fd);font-weight:800;font-size:28px;line-height:36px}
+.facts .ms{color:var(--rc)}
+.prog i{background:var(--grad);background-size:100vw 100%}
+.nb[aria-pressed=true]{background:var(--rc,var(--sel))}
+.bar .dots{display:flex;gap:3px;padding:0 6px 0 8px}
+.bar .dots i{width:6px;height:6px;border-radius:50%}
+.bar .dots i:nth-child(1){background:var(--c-coral)}.bar .dots i:nth-child(2){background:var(--c-purple)}.bar .dots i:nth-child(3){background:var(--c-blue)}.bar .dots i:nth-child(4){background:var(--c-green)}
+.act[aria-pressed=true]{background:color-mix(in srgb,var(--rc) 12%,var(--panel));border-color:var(--rc);color:var(--rc)}
+.clock .t{background:var(--rc)}
+.chip[aria-pressed=true]{background:color-mix(in srgb,var(--rc) 14%,var(--panel));color:var(--rc)}
+.fab{background:var(--ink);color:var(--panel)}
+.tip{background:var(--sticky);color:var(--sticky-ink);border-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,.08),0 6px 14px -6px rgba(0,0,0,.18);flex:none}
+/* ---------- 结构化答题思路 ---------- */
+.tip{transform:none;padding:14px;display:flex;flex-direction:column;gap:12px;font-size:12px;line-height:18px}
+.tip-h{display:flex;align-items:center;justify-content:space-between}
+.tip-h b .ms{color:var(--c-coral)}
+.tip-h b{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:700;margin:0}
+.tip .time{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;background:var(--tip-chip);border-radius:999px;padding:0 8px;line-height:20px}
+.look{display:flex;flex-direction:column;gap:2px;font-size:13px;line-height:19px}
+.look span,.t-sec,.key span,.pa span{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;letter-spacing:.02em;opacity:.75}
+.t-sec{margin-bottom:-6px}
+/* 步骤流 */
+.v-flow{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;position:relative}
+.v-flow li{display:flex;gap:10px;align-items:flex-start;position:relative;padding-bottom:10px}
+.v-flow li:last-child{padding-bottom:0}
+.v-flow li:not(:last-child)::before{content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--k);opacity:.35;border-radius:1px}
+.v-flow .dot{width:28px;height:28px;border-radius:8px;background:var(--k);color:#fff;display:grid;place-items:center;flex:none}
+.v-flow .dot .ms{font-size:16px}
+.v-flow b{display:block;font-size:13px;line-height:18px;font-weight:700;color:var(--sticky-ink)}
+.v-flow small{display:block;font-size:12px;line-height:17px;opacity:.85}
+/* 漏斗 */
+.v-funnel{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;align-items:center}
+.v-funnel li{width:var(--w);display:flex;flex-direction:column;align-items:center;gap:1px;text-align:center}
+.v-funnel .bar{width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:4px;background:var(--k);color:#fff;font-weight:700;font-size:12px;line-height:26px;border-radius:6px}
+.v-funnel small{font-size:11px;line-height:15px;opacity:.85}
+/* STAR 四格 */
+.v-star{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.v-star div{background:var(--tip-card);border-radius:8px;padding:8px 10px;border-top:3px solid var(--k);min-width:0}
+.v-star em{font-style:normal;font-family:var(--fd);font-weight:800;font-size:18px;line-height:22px;color:var(--k);margin-right:4px}
+.v-star b{font-size:13px;font-weight:700}
+.v-star small{display:block;font-size:11px;line-height:16px;opacity:.85;margin-top:2px}
+/* 状态格 */
+.v-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px}
+.v-grid div{display:grid;grid-template-columns:22px 1fr;column-gap:6px;align-items:center;background:var(--tip-card);border-radius:8px;padding:7px 8px;min-width:0}
+.v-grid .ms{grid-row:span 2;color:var(--k);font-size:20px}
+.v-grid b{font-size:12px;line-height:16px;font-weight:700}
+.v-grid small{font-size:11px;line-height:14px;opacity:.8}
+/* 对比 */
+.v-vs{display:flex;flex-direction:column;gap:4px}
+.v-vs .vh{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;margin-bottom:2px}
+.v-vs .vh span{background:var(--k);color:#fff;font-weight:700;font-size:12px;line-height:16px;text-align:center;border-radius:6px;padding:5px 6px;min-width:0;overflow-wrap:anywhere}
+.v-vs .vh i{font-style:normal;font-family:var(--fd);font-weight:800;font-size:12px;opacity:.6}
+.v-vs .vr{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.v-vs .vr span{background:var(--tip-card);border-radius:6px;padding:5px 8px;font-size:12px;text-align:center}
+.v-vs .vr.one{display:block;background:var(--tip-card);border-radius:6px;padding:5px 8px;font-size:12px;text-align:center;position:relative}
+.v-vs .vr.one::before,.v-vs .vr.one::after{content:"←";position:absolute;left:10px;opacity:.4}
+.v-vs .vr.one::after{content:"→";left:auto;right:10px}
+/* 本题要点 */
+.key{display:flex;gap:8px;align-items:flex-start;background:var(--tip-card);border-radius:8px;padding:8px 10px;font-size:13px;line-height:19px}
+.key>.ms{color:var(--c-coral);margin-top:1px}
+.key span{display:block}
+/* 加分 / 避坑 */
+.pa{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pa>div{border-radius:8px;padding:8px 10px;min-width:0}
+.pa .p{background:color-mix(in srgb,var(--c-green) 13%,var(--tip-card))}
+.pa .a{background:color-mix(in srgb,var(--c-coral) 12%,var(--tip-card))}
+.pa .p span .ms{color:var(--c-green)}.pa .a span .ms{color:var(--c-coral)}
+.pa ul{margin:4px 0 0;padding-left:14px;font-size:12px;line-height:17px}
+.pa li+li{margin-top:2px}
+@media (max-width:360px){.pa,.v-star{grid-template-columns:1fr}}
+.key .flow li,.key .pts span,.key .core{color:var(--sticky-ink)}
+.key .pts span{background:var(--tip-chip)}
+.key .note2{color:inherit;opacity:.75}
+.key .lead{font-size:12px;font-weight:700;margin:0 0 6px}
+.key>div{flex:1;min-width:0}
+.key>div>span{margin-bottom:4px}
+
+/* ---------- 思路卡：精致版（单色线性图标 + 暖灰发丝线） ---------- */
+.tip{background:var(--sticky);color:var(--sticky-ink);border:1px solid var(--tip-line);border-radius:10px;box-shadow:none;padding:16px;gap:14px}
+.tip .ms{font-variation-settings:"FILL" 0,"wght" 300,"GRAD" 0,"opsz" 20}
+.tip-h b{font-size:13px;font-weight:600;letter-spacing:.01em}
+.tip-h b .ms{color:var(--tip-acc);font-size:18px}
+.tip .time{background:none;border:1px solid var(--tip-line);color:var(--tip-mute);font-weight:500}
+.look span,.t-sec,.key span,.pa span{color:var(--tip-mute);opacity:1;font-weight:600;font-size:10.5px;letter-spacing:.08em}
+.look{font-size:13px;line-height:20px;padding-bottom:12px;border-bottom:1px solid var(--tip-line)}
+.t-sec{margin-bottom:-4px}
+.no{font-style:normal;font-family:var(--fd);font-weight:700;font-size:11px;color:var(--tip-acc);margin-right:6px;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+/* 步骤流 */
+.v-flow li{gap:12px;padding-bottom:12px}
+.v-flow li:not(:last-child)::before{left:13.5px;top:30px;width:0;background:none;border-left:1px dashed var(--tip-line);opacity:1}
+.v-flow .dot{width:28px;height:28px;border-radius:50%;background:var(--tip-card);border:1px solid var(--tip-line);color:var(--sticky-ink)}
+.v-flow .dot .ms{font-size:16px;opacity:.75}
+.v-flow li:first-child .dot{border-color:var(--tip-acc);color:var(--tip-acc)}
+.v-flow li:first-child .dot .ms{opacity:1}
+.v-flow b{font-weight:600;display:flex;align-items:baseline}
+.v-flow small{opacity:1;color:var(--tip-mute);margin-top:1px}
+/* 漏斗：同一暖色的明度阶梯 */
+.v-funnel{gap:4px}
+.v-funnel .bar{background:color-mix(in srgb,var(--tip-acc) calc(26% - var(--i,0) * 4%),transparent);color:var(--sticky-ink);font-weight:600;border:1px solid var(--tip-line);line-height:28px}
+.v-funnel small{opacity:1;color:var(--tip-mute)}
+/* STAR */
+.v-star div{background:var(--tip-card);border:1px solid var(--tip-line);border-top:1px solid var(--tip-line);border-radius:8px}
+.v-star em{color:var(--tip-acc);font-size:16px}
+.v-star b{font-weight:600}
+.v-star small{opacity:1;color:var(--tip-mute)}
+.v-star div:nth-child(3){border-color:var(--tip-acc)}
+/* 状态格 */
+.v-grid div{background:var(--tip-card);border:1px solid var(--tip-line)}
+.v-grid .ms{color:var(--sticky-ink);opacity:.7;font-size:18px}
+.v-grid b{font-weight:600}
+.v-grid small{opacity:1;color:var(--tip-mute)}
+/* 对比 */
+.v-vs .vh span{background:var(--tip-card);color:var(--sticky-ink);border:1px solid var(--tip-line);font-weight:600}
+.v-vs .vh span:first-child{border-color:var(--tip-acc)}
+.v-vs .vh i{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-weight:400;font-size:14px;color:var(--tip-mute);opacity:1}
+.v-vs .vr span,.v-vs .vr.one{background:none;border-bottom:1px dashed var(--tip-line);border-radius:0;color:var(--sticky-ink)}
+.v-vs .vr.one::before,.v-vs .vr.one::after{color:var(--tip-mute)}
+/* 本题要点 */
+.key{background:none;border-left:2px solid var(--tip-acc);border-radius:0;padding:2px 0 2px 12px}
+.key>.ms{display:none}
+.key .pts span{background:var(--tip-card);border:1px solid var(--tip-line)}
+.key .pts span i{color:var(--tip-acc)}
+.key .flow .n{background:var(--tip-card);color:var(--tip-acc);border-color:var(--tip-line)}
+.key .flow li:last-child .n{background:var(--tip-acc);color:#fff;border-color:var(--tip-acc)}
+.key .flow li::before{background:var(--tip-line)}
+.key .core::before{display:none}
+.key .core{padding:0}
+/* 加分 / 避坑 */
+.pa{gap:8px;padding-top:12px;border-top:1px solid var(--tip-line)}
+.pa>div,.pa .p,.pa .a{background:none;padding:0;border-radius:0}
+.pa .gl{font-style:normal;font-family:var(--fd);font-weight:700;font-size:13px;width:16px;height:16px;border-radius:50%;display:inline-grid;place-items:center;margin-right:4px;line-height:1}
+.pa .p .gl{color:var(--tip-plus);border:1px solid var(--tip-plus)}
+.pa .a .gl{color:var(--tip-minus);border:1px solid var(--tip-minus)}
+.pa ul{list-style:none;padding-left:0;margin-top:6px}
+.pa li{position:relative;padding-left:12px;color:var(--sticky-ink)}
+.pa li::before{content:"";position:absolute;left:2px;top:7px;width:4px;height:4px;border-radius:50%;background:var(--tip-mute);opacity:.6}
+
+/* 思路卡：Figma 浅色便利贴色系，每类题一种颜色 */
+.tip.tc0{--sticky:#FFF0FA;--tip-acc:#C9479F}
+.tip.tc1{--sticky:#EAF5FF;--tip-acc:#1A8FE0}
+.tip.tc2{--sticky:#EDFAF2;--tip-acc:#2A9A58}
+.tip.tc3{--sticky:#F5EEFF;--tip-acc:#8A5CF0}
+.tip.tc4{--sticky:#FFF5E8;--tip-acc:#CF7A1C}
+.tip.tc5{--sticky:#EAF9F7;--tip-acc:#1C978B}
+.tip.tc6{--sticky:#FFF1EE;--tip-acc:#D2554B}
+.tip.tc7{--sticky:#FFFAE3;--tip-acc:#AE8400}
+.tip[class*="tc"]{--sticky-ink:#26232A;--tip-line:color-mix(in srgb,var(--tip-acc) 22%,transparent);--tip-mute:color-mix(in srgb,var(--tip-acc) 55%,#6E6E6E);--tip-card:rgba(255,255,255,.78)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tip[class*="tc"]{--sticky:color-mix(in srgb,var(--tip-acc) 14%,#232323);--sticky-ink:#F1F1F1;--tip-mute:color-mix(in srgb,var(--tip-acc) 50%,#B5B5B5);--tip-card:rgba(255,255,255,.05)}}
+:root[data-theme="dark"] .tip[class*="tc"]{--sticky:color-mix(in srgb,var(--tip-acc) 14%,#232323);--sticky-ink:#F1F1F1;--tip-mute:color-mix(in srgb,var(--tip-acc) 50%,#B5B5B5);--tip-card:rgba(255,255,255,.05)}
+/* ---------- 笔记面板与笔记预览 ---------- */
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.28);z-index:20}
+.sheet{position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:21;width:min(640px,100%);max-height:86%;box-sizing:border-box;display:flex;flex-direction:column;gap:12px;border-radius:14px 14px 0 0;border-bottom:0;padding:16px 16px calc(env(safe-area-inset-bottom,0px) + 14px);box-shadow:0 -8px 30px rgba(0,0,0,.18)}
+.sheet .sh-h{display:flex;align-items:center;gap:8px}
+.sheet .sh-h b{flex:1;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700}
+.sheet .sh-h b .ms{color:var(--tip-acc)}
+.sheet .sh-h .ib{width:28px;height:28px;color:var(--tip-mute)}
+.sheet .sh-q{margin:0;font-family:var(--fd);font-weight:700;font-size:15px;line-height:22px}
+.sheet .sh-s{margin:-6px 0 0;font-size:11px;color:var(--tip-mute)}
+.sh-f{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:2px}
+.fld{display:flex;flex-direction:column;gap:4px}
+.fld span{display:flex;align-items:baseline;font-size:12px;font-weight:600}
+.fld textarea{resize:vertical;min-height:44px;font:inherit;font-size:13px;line-height:19px;color:var(--sticky-ink);background:var(--tip-card);border:1px solid var(--tip-line);border-radius:6px;padding:8px 10px;box-sizing:border-box;width:100%}
+.fld textarea::placeholder{color:var(--tip-mute);opacity:.8}
+.fld textarea:focus{outline:none;border-color:var(--tip-acc);box-shadow:0 0 0 2px color-mix(in srgb,var(--tip-acc) 18%,transparent)}
+.sh-foot{display:flex;align-items:center;gap:8px;padding-top:4px;border-top:1px solid var(--tip-line)}
+.sh-foot .grow{flex:1}
+.linkbtn{border:0;background:none;color:var(--tip-minus,#B05A3C);font-size:12px;font-weight:600;padding:8px 4px}
+.sheet .btn{background:var(--ink);color:var(--panel)}
+.mynote{border:1px dashed var(--line2);border-radius:8px;padding:10px 12px;font-size:12px;line-height:18px;flex:none}
+.mn-h{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.mn-e{margin-left:auto;border:0;background:none;color:var(--sel);font-size:11px;font-weight:600;padding:0}
+.mynote dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px}
+.mynote dt{color:var(--muted);white-space:nowrap}
+.mynote dd{margin:0;color:var(--ink);white-space:pre-wrap;min-width:0;overflow-wrap:anywhere}
+.act.fav[aria-pressed=true]{background:color-mix(in srgb,var(--c-coral) 10%,var(--panel));border-color:var(--c-coral);color:var(--c-coral)}
+
+/* PWA */
+.inst{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 10px 0 6px;border:0;border-radius:5px;background:var(--sel);color:#fff;font-size:12px;font-weight:600;margin-left:6px}
+.inst .ms{font-size:16px}
+.iosTip{display:flex;gap:10px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--sel);border-radius:6px;padding:12px}
+.iosTip>.ms{color:var(--sel)}
+.iosTip div{flex:1}
+.iosTip b{display:block;font-size:12px;font-weight:600}
+.iosTip p{margin:2px 0 0;font-size:12px;line-height:18px;color:var(--ink2)}
+.iosTip .ib{width:24px;height:24px}
+.offline{position:fixed;top:calc(env(safe-area-inset-top,0px) + 6px);left:50%;transform:translateX(-50%);z-index:30;background:var(--ink);color:var(--panel);font-size:11px;padding:2px 10px;border-radius:999px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<main id="home">
+  <header class="appbar">
+    <div class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="crumb"><span>面试准备 /</span><h1>设计面试陪练</h1></div>
+    <span class="badge">500 题</span><button class="inst" id="installBtn" hidden><span class="ms">install_mobile</span>安装</button>
+  </header>
+
+  <section class="framewrap">
+    <div class="flabel"><span class="ms">tag</span>完整面试</div>
+    <div class="hero">
+    <div class="cursor k1" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M2 1.5l11 5.2-4.6 1.4L6.6 13z"/></svg><span>设计总监</span></div>
+    <div class="cursor k2" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M2 1.5l11 5.2-4.6 1.4L6.6 13z"/></svg><span>你</span></div>
+    <h2>来一场完整的<mark>模拟面试</mark></h2>
+    <p>按真实顺序连续进行三轮。面试官会读出每道题，你上下滑动切换题目。</p>
+    <div class="steps"><span class="s1"><i></i>一面 8 题</span><span class="s2"><i></i>二面 8 题</span><span class="s3"><i></i>终面 6 题</span><span>约 60 分钟</span></div>
+    <button class="fab" id="startFlow"><span class="ms fill">play_arrow</span>开始面试</button>
+    </div>
+  </section>
+
+  <div class="iosTip" id="iosTip" hidden><span class="ms">ios_share</span><div><b>装到主屏幕，像 App 一样用</b><p>点 Safari 底部的「分享」，再选「添加到主屏幕」。装好后可以离线练习。</p></div><button class="ib" id="iosClose" aria-label="关闭"><span class="ms">close</span></button></div>
+  <div class="banner" id="voiceWarn" hidden></div>
+
+  <section>
+    <div class="panel"><div class="ptitle">分轮练习<span>3 轮 · 可单独练</span></div>
+    <div class="mods" id="mods"></div></div>
+  </section>
+
+  <section>
+    <div class="panel"><div class="ptitle">朗读与练习设置</div>
+    <div class="settings">
+      <div class="row"><span class="ms fill" style="--ic:var(--c-coral)">record_voice_over</span><label for="sVoice">朗读声音<small id="voiceInfo">正在查找中文语音…</small></label><select id="sVoice"></select></div>
+      <div class="row"><span class="ms fill" style="--ic:var(--c-coral)">hearing</span><label>试听<small>确认是中文普通话发音</small></label><button class="tbtn st" id="tryVoice"><span class="ms sm">play_arrow</span>试听</button></div>
+      <div class="row"><span class="ms fill" style="--ic:var(--c-blue)">autoplay</span><label for="sAuto">滑到即读<small>新题出现时自动朗读</small></label><span class="sw"><input type="checkbox" id="sAuto" checked><i></i></span></div>
+      <div class="row"><span class="ms fill" style="--ic:var(--c-blue)">speed</span><label for="sRate">语速<small id="rateV">1.1 倍</small></label><input type="range" id="sRate" min="0.6" max="1.8" step="0.1" value="1.1"></div>
+      <div class="row"><span class="ms fill" style="--ic:var(--c-green)">timer</span><label for="sNext">自动下一题<small>读完后留出作答时间再翻页</small></label>
+        <select id="sNext"><option value="0">关闭</option><option value="30">30 秒</option><option value="60">60 秒</option><option value="90">90 秒</option><option value="120">2 分钟</option></select></div>
+      <div class="row"><span class="ms fill" style="--ic:var(--c-purple)">shuffle</span><label for="sShuf">随机出题<small>分轮练习时打乱顺序</small></label><span class="sw"><input type="checkbox" id="sShuf" checked><i></i></span></div>
+      <div class="row"><span class="ms fill" style="--ic:var(--c-yellow)">lightbulb</span><label for="sTip">默认显示思路<small>关闭时先自己作答再点开</small></label><span class="sw"><input type="checkbox" id="sTip"><i></i></span></div>
+    </div></div>
+  </section>
+</main>
+
+<div id="play" hidden>
+  <div class="top">
+    <button class="ib st" id="back" aria-label="返回首页"><span class="ms">arrow_back</span></button>
+    <div class="ttl"><b id="pTitle"></b><span id="pCount"></span></div>
+    <button class="ib st" id="reshuf" aria-label="重新出题"><span class="ms">shuffle</span></button>
+  </div>
+  <div class="prog"><i id="progI"></i></div>
+  <div class="chips" id="chips"></div>
+  <div class="feed" id="feed"></div>
+  <nav class="bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <button class="nb" id="bAuto" aria-pressed="true"><span class="pillic"><span class="ms">volume_up</span></span><span class="lb">朗读</span></button>
+    <span class="sep"></span>
+    <button class="nb" id="bNext" aria-pressed="false"><span class="pillic"><span class="ms">timer</span></span><span class="lb">自动翻页</span></button>
+    <span class="sep"></span>
+    <button class="nb" id="bStop"><span class="pillic"><span class="ms">stop_circle</span></span><span class="lb">停止</span></button>
+  </nav>
+  <div class="sheet-bg" id="sheetBg" hidden></div>
+  <section class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="shTitle">
+    <div class="sh-h"><b id="shTitle"><span class="ms">edit_note</span>框架笔记</b><button class="ib" id="shClose" aria-label="关闭"><span class="ms">close</span></button></div>
+    <p class="sh-q" id="shQ"></p>
+    <p class="sh-s" id="shState"></p>
+    <div class="sh-f" id="shF"></div>
+    <div class="sh-foot"><button class="linkbtn" id="shUnfav">取消收藏</button><span class="grow"></span><button class="btn" id="shSave"><span class="ms">check</span>保存笔记</button></div>
+  </section>
+</div>
+
+<script>
+const QS = [{"r": 1, "c": "自我介绍与作品集", "q": "请用 2 分钟做一个自我介绍。", "t": "背景→核心能力→代表项目→为什么是这个岗位，控制在 2 分钟，结尾留一个可被追问的钩子。"}, {"r": 1, "c": "自我介绍与作品集", "q": "挑一个你最有代表性的项目，用 5 分钟讲给我听。", "t": "STAR：背景与目标、你的角色、关键决策、量化结果，留出取舍过程。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你的作品集为什么选了这几个项目？", "t": "说明筛选逻辑：覆盖的能力维度、与岗位的匹配度、项目难度梯度。"}, {"r": 1, "c": "自我介绍与作品集", "q": "这个项目里你具体负责了哪些部分？", "t": "清楚划分个人贡献与团队贡献，用“我”描述决策，不夸大。"}, {"r": 1, "c": "自我介绍与作品集", "q": "这个项目最终上线了吗？上线后的效果如何？", "t": "给出数据或用户反馈；未上线就说明原因和你从中学到什么。"}, {"r": 1, "c": "自我介绍与作品集", "q": "如果让你重做这个项目，你会改哪里？", "t": "体现复盘能力：指出一个真实缺陷、原因、改进方案。"}, {"r": 1, "c": "自我介绍与作品集", "q": "作品集中哪个设计决策是你最骄傲的？", "t": "讲清问题、备选方案、选择依据和验证结果。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你过去的项目中，设计稿和最终上线效果差距大吗？怎么处理的？", "t": "谈设计走查、与开发的协作机制、优先级取舍。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你在上一份工作中最大的成长是什么？", "t": "具体到一种能力，用事例佐证。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你为什么想做产品/交互设计？", "t": "真实动机 + 与过往经历的连接，避免空泛的“热爱”。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你的设计风格或设计理念是什么？", "t": "一句可落地的理念 + 项目中的体现，避免玄学化。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你做过的项目里，哪个用户群体最难理解？为什么？", "t": "说出认知差异、你采用的研究方法、如何建立同理心。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你目前的职级和主要职责是什么？", "t": "如实描述职责范围、汇报关系、负责业务规模。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你的作品集里有没有失败的项目？", "t": "敢于谈失败：原因、你的反思、后续做法的改变。"}, {"r": 1, "c": "自我介绍与作品集", "q": "用三个词形容你自己作为设计师的特点。", "t": "每个词配一个具体事例，与岗位需求呼应。"}, {"r": 1, "c": "自我介绍与作品集", "q": "最近半年你最满意的一个设计细节是什么？", "t": "小而具体的交互细节，讲清它解决了什么问题。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你的项目里有多少是从 0 到 1，多少是迭代优化？", "t": "区分两类项目的不同方法与挑战。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你在作品集中提到“提升了转化率”，这个数据是怎么得出的？", "t": "说明实验方式、对照组、归因是否严谨，体现数据诚实。"}, {"r": 1, "c": "交互基础", "q": "你怎么理解交互设计？它和 UI 设计、产品设计的边界在哪里？", "t": "交互关注行为与流程，UI 关注视觉表达，产品关注价值与目标；实际工作中边界模糊，重点讲协作。"}, {"r": 1, "c": "交互基础", "q": "什么是好的交互设计？你的评判标准是什么？", "t": "可用性（有效、效率、满意）+ 业务目标达成 + 可实现性，配一个例子。"}, {"r": 1, "c": "交互基础", "q": "谈谈你对“用户体验”的理解。", "t": "可用 Garrett 五层模型或 Peter Morville 蜂窝模型，并联系实际。"}, {"r": 1, "c": "交互基础", "q": "说说尼尔森十大可用性原则，并选两条举例。", "t": "系统状态可见、匹配现实、用户控制、一致性、防错、识别而非回忆、灵活高效、简约、帮助纠错、帮助文档。"}, {"r": 1, "c": "交互基础", "q": "什么是信息架构？你一般如何搭建？", "t": "内容盘点→卡片分类→树状测试→导航设计，强调组织、标签、导航、搜索系统。"}, {"r": 1, "c": "交互基础", "q": "模态弹窗和非模态提示各适合什么场景？", "t": "按打断程度和信息重要性区分：确认/危险操作用模态，结果反馈用 Toast/Snackbar。"}, {"r": 1, "c": "交互基础", "q": "如何设计一个让用户不迷路的导航结构？", "t": "清晰的层级、当前位置指示、返回路径、深度与广度平衡。"}, {"r": 1, "c": "交互基础", "q": "你怎么看待“三次点击原则”？", "t": "点击次数不是关键，关键是每一步是否确定、无认知负担。"}, {"r": 1, "c": "交互基础", "q": "空状态应该怎么设计？", "t": "解释为什么为空、引导下一步行动、视觉友好；区分首次使用、无结果、出错三类。"}, {"r": 1, "c": "交互基础", "q": "加载状态有哪些设计方式？各适用于什么场景？", "t": "骨架屏、进度条、Spinner、乐观更新；按时长与可预期性选择。"}, {"r": 1, "c": "交互基础", "q": "如何设计一个好的错误提示？", "t": "说明发生了什么、为什么、怎么解决；位置靠近出错点、语言友好、不责怪用户。"}, {"r": 1, "c": "交互基础", "q": "什么是渐进式披露？举一个例子。", "t": "先展示核心信息，高级选项按需展开，例如设置页的“高级设置”。"}, {"r": 1, "c": "交互基础", "q": "移动端和桌面端在交互设计上的主要差异有哪些？", "t": "输入方式、屏幕尺寸、使用场景、手势、热区、网络环境。"}, {"r": 1, "c": "交互基础", "q": "手势交互有什么优缺点？如何降低学习成本？", "t": "高效但不可见；用引导、视觉暗示、提供按钮替代路径。"}, {"r": 1, "c": "交互基础", "q": "如何确定一个按钮的大小和点击热区？", "t": "参考 iOS 44pt、Android 48dp，结合拇指热区与菲茨定律。"}, {"r": 1, "c": "交互基础", "q": "什么是功能可见性（Affordance）？", "t": "物体的外观暗示其用法，例如按钮的阴影暗示可点击；补充 signifier 概念。"}, {"r": 1, "c": "交互基础", "q": "确认弹窗是不是越多越安全？", "t": "过多会导致习惯性点确认；更好的方案是撤销机制、危险操作二次输入。"}, {"r": 1, "c": "交互基础", "q": "撤销（Undo）和确认（Confirm）该如何取舍？", "t": "可逆操作优先撤销，不可逆且代价高的操作再用确认。"}, {"r": 1, "c": "交互基础", "q": "表单设计有哪些常见的优化手段？", "t": "减少字段、合理分组、实时校验、智能默认值、标签位置、输入类型匹配键盘。"}, {"r": 1, "c": "交互基础", "q": "你如何定义一个任务流程是否“顺畅”？", "t": "完成率、耗时、出错次数、用户主观评分。"}, {"r": 1, "c": "交互基础", "q": "如何为老年用户做适老化设计？", "t": "大字号与高对比、简化流程、减少手势、语音辅助、容错。"}, {"r": 1, "c": "交互基础", "q": "什么是无障碍设计？你在项目中如何落实？", "t": "对比度、屏幕阅读器标签、键盘可达、不只依赖颜色传达信息。"}, {"r": 1, "c": "交互基础", "q": "微交互的价值是什么？举一个你喜欢的例子。", "t": "触发、规则、反馈、循环/模式四要素；举具体例子。"}, {"r": 1, "c": "交互基础", "q": "动效在交互中的作用有哪些？", "t": "引导注意、表达层级与空间关系、反馈状态、提升情感体验；避免过度。"}, {"r": 1, "c": "交互基础", "q": "单页长流程和分步流程，你会怎么选择？", "t": "看字段量、逻辑依赖、用户中断风险；分步需显示进度。"}, {"r": 1, "c": "交互基础", "q": "下拉菜单、单选、分段控件分别适合什么场景？", "t": "按选项数量、是否需要对比、屏幕空间选择。"}, {"r": 1, "c": "交互基础", "q": "搜索功能的交互设计要考虑哪些环节？", "t": "入口、联想、历史、结果排序与筛选、无结果、纠错。"}, {"r": 1, "c": "交互基础", "q": "什么情况下应该用 Tab，什么情况下用分段控件？", "t": "Tab 用于平级内容切换，分段控件用于同一内容的不同视图。"}, {"r": 1, "c": "视觉与设计规范", "q": "你如何搭建或维护一套设计系统？", "t": "原子化：Token→组件→模式→文档；治理流程与版本管理。"}, {"r": 1, "c": "视觉与设计规范", "q": "设计 Token 是什么？为什么重要？", "t": "把颜色、字号、间距等抽象为变量，统一设计与开发、支持主题切换。"}, {"r": 1, "c": "视觉与设计规范", "q": "如何定义一个产品的色彩体系？", "t": "品牌色、功能色、中性色，可访问性对比度，暗色模式适配。"}, {"r": 1, "c": "视觉与设计规范", "q": "字体层级怎么建立？", "t": "基于模数比例或 4/8 倍数，限制层级数量，考虑行高与可读性。"}, {"r": 1, "c": "视觉与设计规范", "q": "你常用的栅格和间距规范是什么？", "t": "8pt 网格、列栅格、断点；说明为何选择。"}, {"r": 1, "c": "视觉与设计规范", "q": "暗黑模式设计需要注意什么？", "t": "不是简单反色：降低饱和度、层级用明度区分、避免纯黑、检查对比度。"}, {"r": 1, "c": "视觉与设计规范", "q": "视觉层级是如何建立的？", "t": "大小、颜色、对比、位置、留白；一屏只有一个主焦点。"}, {"r": 1, "c": "视觉与设计规范", "q": "你如何判断一个图标是否好用？", "t": "可识别、一致的风格、是否需要配文字、在小尺寸下的清晰度。"}, {"r": 1, "c": "视觉与设计规范", "q": "组件库中一个按钮组件应该有哪些状态？", "t": "默认、悬停、按下、聚焦、禁用、加载，以及不同层级与尺寸。"}, {"r": 1, "c": "视觉与设计规范", "q": "设计规范推不下去，团队成员不遵守，你会怎么做？", "t": "降低遵守成本（组件库）、建立评审机制、展示收益数据。"}, {"r": 1, "c": "视觉与设计规范", "q": "多端（iOS/Android/Web）设计如何保持一致又尊重平台差异？", "t": "品牌与信息架构一致，控件和导航遵循平台习惯。"}, {"r": 1, "c": "视觉与设计规范", "q": "什么是格式塔原则？在界面中如何运用？", "t": "接近、相似、闭合、连续、共同命运等，用于分组与布局。"}, {"r": 1, "c": "设计流程与方法", "q": "说说你的完整设计流程。", "t": "理解需求→研究→定义问题→方案发散收敛→原型验证→交付→上线复盘，强调根据项目灵活裁剪。"}, {"r": 1, "c": "设计流程与方法", "q": "拿到一个新需求，你首先会做什么？", "t": "弄清背景、目标、用户、约束和衡量指标，而不是马上画图。"}, {"r": 1, "c": "设计流程与方法", "q": "需求文档写得很模糊，你会怎么处理？", "t": "主动对齐：列问题清单、和 PM 拆解目标、补充研究。"}, {"r": 1, "c": "设计流程与方法", "q": "什么是双钻模型？你如何使用？", "t": "发现→定义→发展→交付，两次发散收敛，用于问题定义与方案设计。"}, {"r": 1, "c": "设计流程与方法", "q": "低保真和高保真原型各在什么阶段使用？", "t": "低保真用于快速验证结构流程，高保真用于细节与可用性测试、交付。"}, {"r": 1, "c": "设计流程与方法", "q": "你如何做设计评审？", "t": "评审前明确目标与问题、评审中聚焦用户与目标、评审后跟进结论。"}, {"r": 1, "c": "设计流程与方法", "q": "你一般怎么和开发对接？如何保证还原度？", "t": "标注与组件对齐、交付前讲解、走查清单、建立问题追踪。"}, {"r": 1, "c": "设计流程与方法", "q": "你如何给设计方案排优先级？", "t": "影响面 × 价值 ÷ 成本，结合业务节奏，可用 RICE 或 MoSCoW。"}, {"r": 1, "c": "设计流程与方法", "q": "用户旅程地图怎么画？它解决什么问题？", "t": "阶段、行为、触点、想法、情绪、痛点与机会点，用于全局视角找机会。"}, {"r": 1, "c": "设计流程与方法", "q": "Persona（用户画像）怎么构建？你觉得它有用吗？", "t": "基于真实研究数据，而非拍脑袋；用于对齐团队对用户的认知。"}, {"r": 1, "c": "设计流程与方法", "q": "什么是 MVP？设计师如何参与 MVP 的定义？", "t": "最小可验证产品，设计师帮助识别核心价值路径、砍掉非必要功能。"}, {"r": 1, "c": "设计流程与方法", "q": "设计中你如何平衡创新和用户习惯？", "t": "核心流程遵循习惯，在差异化价值点适度创新，并验证。"}, {"r": 1, "c": "设计流程与方法", "q": "你怎么写设计说明或设计文档？", "t": "背景、目标、方案、关键决策与理由、边界情况、埋点需求。"}, {"r": 1, "c": "设计流程与方法", "q": "交付给开发的设计稿需要包含哪些内容？", "t": "各状态、边界与异常、动效说明、适配规则、切图或组件引用。"}, {"r": 1, "c": "用户研究基础", "q": "你常用哪些用户研究方法？分别在什么阶段使用？", "t": "按定性/定量、态度/行为两维度划分，并对应项目阶段。"}, {"r": 1, "c": "用户研究基础", "q": "用户访谈怎么设计提纲？", "t": "开放式问题、从一般到具体、避免引导、关注过去真实行为。"}, {"r": 1, "c": "用户研究基础", "q": "可用性测试一般找几个人？为什么？", "t": "Nielsen 5 人可发现约 85% 问题，适用于迭代式定性测试。"}, {"r": 1, "c": "用户研究基础", "q": "问卷设计有哪些常见的坑？", "t": "引导性问题、双重问题、选项不互斥、样本偏差、过长。"}, {"r": 1, "c": "用户研究基础", "q": "用户说的和做的不一致，你信哪个？", "t": "更相信行为数据，但要理解背后的动机，两者结合。"}, {"r": 1, "c": "用户研究基础", "q": "你如何从访谈记录中提炼洞察？", "t": "转录→打标签→亲和图→提炼模式→形成可行动的洞察。"}, {"r": 1, "c": "用户研究基础", "q": "没有预算和时间做用户研究时怎么办？", "t": "游击测试、内部同事测试、数据与客服反馈、竞品评论分析。"}, {"r": 1, "c": "用户研究基础", "q": "A/B 测试适合解决什么问题？不适合什么？", "t": "适合有明确指标的局部优化，不适合方向性、长期价值或小流量场景。"}, {"r": 1, "c": "用户研究基础", "q": "卡片分类法怎么做？开放式和封闭式有何区别？", "t": "开放式让用户自建分组，封闭式验证已有分类。"}, {"r": 1, "c": "用户研究基础", "q": "SUS 量表是什么？如何使用？", "t": "10 题系统可用性量表，计算 0-100 分，68 分为平均。"}, {"r": 1, "c": "工具与协作", "q": "你主要使用哪些设计工具？为什么？", "t": "说工具选择背后的协作与效率考虑，而非罗列。"}, {"r": 1, "c": "工具与协作", "q": "你如何管理 Figma 文件和组件库？", "t": "页面结构、命名规范、组件变体、版本分支。"}, {"r": 1, "c": "工具与协作", "q": "你怎么看 AI 工具对设计工作的影响？你用过哪些？", "t": "具体用法与边界：提效的环节、需要人判断的环节。"}, {"r": 1, "c": "工具与协作", "q": "你如何用原型工具表达复杂交互？", "t": "按保真度选择工具，复杂动效可用 ProtoPie 或代码原型。"}, {"r": 1, "c": "工具与协作", "q": "你懂前端吗？了解到什么程度？", "t": "了解基本布局、组件化和实现成本，帮助沟通即可。"}, {"r": 1, "c": "工具与协作", "q": "你和产品经理一般怎么分工？", "t": "PM 定义问题与目标，设计负责解法体验，边界上主动补位。"}, {"r": 1, "c": "工具与协作", "q": "你如何跟进一个功能上线后的表现？", "t": "埋点、看板、用户反馈、定期复盘。"}, {"r": 1, "c": "工具与协作", "q": "设计师需要懂数据吗？你平时看哪些数据？", "t": "需要；关注漏斗转化、留存、任务完成率、关键行为指标。"}, {"r": 1, "c": "交互细节", "q": "设计“登录注册页”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“搜索框”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“下拉刷新”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“无限滚动列表”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“购物车”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“日期选择器”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“文件上传”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“评论输入框”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“通知中心”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“设置页”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“支付确认页”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“筛选面板”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“分享面板”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“引导页”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“步骤条”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“标签输入”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“地址选择”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“验证码输入”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“图片预览”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“音视频播放器”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“消息气泡”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“表格组件”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“侧边导航”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“个人主页”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“订单详情页”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“退出登录”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“密码修改”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“权限申请弹窗”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“离线状态提示”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "交互细节", "q": "设计“版本更新提示”时，需要考虑哪些状态和边界情况？", "t": "逐项检查：正常、空数据、加载中、出错、极端数据、无权限、网络异常；列完后挑一两个讲具体处理方式。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“菲茨定律”的理解，并举一个产品中的例子。", "t": "目标越大越近越好点；应用于按钮尺寸、屏幕边缘与角落。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“希克定律”的理解，并举一个产品中的例子。", "t": "选项越多决策越慢；应用于菜单精简、分步选择。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“米勒定律（7±2）”的理解，并举一个产品中的例子。", "t": "短期记忆有限；用于信息分组，注意其常被误用。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“雅各布定律”的理解，并举一个产品中的例子。", "t": "用户期待你的产品像他们常用的其他产品一样工作。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“泰斯勒复杂度守恒定律”的理解，并举一个产品中的例子。", "t": "复杂度不会消失，只能转移；思考由系统还是用户承担。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“多尔蒂阈值”的理解，并举一个产品中的例子。", "t": "响应低于 400ms 保持用户心流；用于性能与加载设计。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“峰终定律”的理解，并举一个产品中的例子。", "t": "体验评价取决于峰值和结尾；用于设计关键时刻与结束页。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“冯·雷斯托夫效应”的理解，并举一个产品中的例子。", "t": "与众不同的元素更容易被记住；用于突出主操作。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“系列位置效应”的理解，并举一个产品中的例子。", "t": "首尾项更易被记住；用于导航与列表排序。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“美即好用效应”的理解，并举一个产品中的例子。", "t": "美观的界面让用户更宽容；但不能掩盖可用性问题。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“奥卡姆剃刀”的理解，并举一个产品中的例子。", "t": "如无必要勿增实体；用于精简功能与界面。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“帕累托法则”的理解，并举一个产品中的例子。", "t": "80% 的使用集中于 20% 的功能；用于优先级排序。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“目标梯度效应”的理解，并举一个产品中的例子。", "t": "离目标越近动力越强；用于进度条与积分设计。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“蔡格尼克效应”的理解，并举一个产品中的例子。", "t": "人对未完成任务记忆更深；用于资料完善度提示。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“心智模型”的理解，并举一个产品中的例子。", "t": "用户对系统如何工作的预期；设计需贴合或引导重建。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“认知负荷理论”的理解，并举一个产品中的例子。", "t": "区分内在、外在、相关负荷；减少外在负荷。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“损失厌恶”的理解，并举一个产品中的例子。", "t": "失去的痛感大于得到的快乐；常用于挽留与营销，注意伦理。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“默认效应”的理解，并举一个产品中的例子。", "t": "用户倾向于接受默认选项；默认值要服务用户利益。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“锚定效应”的理解，并举一个产品中的例子。", "t": "首个信息影响判断；用于价格展示，注意不诱导。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“社会认同”的理解，并举一个产品中的例子。", "t": "人倾向于跟随他人；用于评价、销量展示。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“暗黑模式（Dark Patterns）”的理解，并举一个产品中的例子。", "t": "诱导用户违背意愿的设计；谈你如何识别和拒绝。"}, {"r": 1, "c": "设计心理与法则", "q": "谈谈你对“Kano 模型”的理解，并举一个产品中的例子。", "t": "基本型、期望型、兴奋型需求；用于功能优先级判断。"}, {"r": 2, "c": "项目深挖", "q": "这个项目的业务目标是什么？设计目标又是什么？两者如何对应？", "t": "把业务指标拆解为可设计的用户行为目标。"}, {"r": 2, "c": "项目深挖", "q": "你是怎么发现这个问题的？是需求驱动还是你主动发现的？", "t": "体现主动性：数据、反馈或走查中发现问题的过程。"}, {"r": 2, "c": "项目深挖", "q": "这个方案你做了几版？为什么最终选了这一版？", "t": "展示发散与收敛过程，以及选择依据（数据、测试、约束）。"}, {"r": 2, "c": "项目深挖", "q": "项目里最大的阻力来自哪里？你怎么推动的？", "t": "识别利益相关方的顾虑，用数据或原型说服，找到共同目标。"}, {"r": 2, "c": "项目深挖", "q": "如果当时开发资源只有一半，你会怎么砍方案？", "t": "保留核心价值路径，分期上线，说明取舍原则。"}, {"r": 2, "c": "项目深挖", "q": "你如何证明这个改版是有效的，而不是自然增长？", "t": "对照实验、排除季节与运营因素、多指标交叉验证。"}, {"r": 2, "c": "项目深挖", "q": "项目中你和 PM 有过分歧吗？最后谁说服了谁？", "t": "讲分歧本质、各自依据、如何达成共识，避免抹黑对方。"}, {"r": 2, "c": "项目深挖", "q": "这个项目的用户研究是怎么做的？样本怎么选的？", "t": "研究方法、样本代表性、发现如何影响方案。"}, {"r": 2, "c": "项目深挖", "q": "项目上线后有没有出现你没预料到的问题？", "t": "真实复盘：问题、原因、修复与预防机制。"}, {"r": 2, "c": "项目深挖", "q": "这个设计在不同终端上是怎么适配的？", "t": "响应式策略、平台差异的处理。"}, {"r": 2, "c": "项目深挖", "q": "这个功能的埋点是你提的吗？你关注哪几个指标？", "t": "主指标、护栏指标、过程指标的设计。"}, {"r": 2, "c": "项目深挖", "q": "你在项目中做的最难的一个权衡是什么？", "t": "具体冲突（体验 vs 商业 / 速度 vs 质量）与决策依据。"}, {"r": 2, "c": "项目深挖", "q": "这个项目如果放在我们公司的业务里，你会怎么做？", "t": "体现迁移能力，事先研究过对方业务更好。"}, {"r": 2, "c": "项目深挖", "q": "你觉得这个项目体现了你的哪项核心能力？还缺什么？", "t": "自我认知清晰，能指出短板与提升计划。"}, {"r": 2, "c": "项目深挖", "q": "你提到做了竞品分析，结论是什么？对方案有什么影响？", "t": "竞品结论要落到具体设计决策上。"}, {"r": 2, "c": "项目深挖", "q": "这个流程原来有几步，你改成了几步？用户真的更快了吗？", "t": "步数不等于效率，看耗时与完成率。"}, {"r": 2, "c": "项目深挖", "q": "你如何说服老板接受一个短期会降低指标的设计？", "t": "长期价值论证、小流量实验、风险控制方案。"}, {"r": 2, "c": "项目深挖", "q": "项目周期多长？时间是怎么分配的？", "t": "体现节奏把控与预估能力。"}, {"r": 2, "c": "项目深挖", "q": "这个项目里你有没有做过“设计之外”的事？", "t": "补位：推动研究、写需求、协调资源等。"}, {"r": 2, "c": "项目深挖", "q": "在这个项目中，你从用户那里学到最意外的一件事是什么？", "t": "体现真实的研究投入和对假设的修正。"}, {"r": 2, "c": "产品思维", "q": "你如何理解用户需求和产品需求的区别？", "t": "用户说的是表层诉求，产品需求是经过分析后的解决方案。"}, {"r": 2, "c": "产品思维", "q": "如何判断一个需求值不值得做？", "t": "用户价值、商业价值、实现成本、战略契合度。"}, {"r": 2, "c": "产品思维", "q": "老板提了一个你认为不合理的需求，你会怎么办？", "t": "先理解背后目标，再给出替代方案并用数据或原型沟通。"}, {"r": 2, "c": "产品思维", "q": "你怎么看待“用户想要一匹更快的马”？", "t": "需求背后是动机，要挖掘本质问题而非照单全收。"}, {"r": 2, "c": "产品思维", "q": "产品的北极星指标怎么定？设计如何对齐？", "t": "反映核心价值的单一指标，设计目标拆解到用户行为。"}, {"r": 2, "c": "产品思维", "q": "增长和体验冲突时你怎么选？", "t": "区分短期与长期，设定护栏指标，找两者兼顾的方案。"}, {"r": 2, "c": "产品思维", "q": "一个功能用的人很少，应该砍掉还是优化入口？", "t": "先诊断：是入口问题、价值问题还是人群问题，再决策。"}, {"r": 2, "c": "产品思维", "q": "如何设计一个让用户愿意付费的会员体系？", "t": "核心权益感知、免费与付费的边界、试用与转化时机、续费体验。"}, {"r": 2, "c": "产品思维", "q": "你怎么看待产品中的“打扰”设计，比如推送和弹窗？", "t": "频控、相关性、用户可控、价值交换。"}, {"r": 2, "c": "产品思维", "q": "平台型产品如何平衡多方（如买家、卖家）的体验？", "t": "识别各方核心诉求，找到双赢点，规则透明。"}, {"r": 2, "c": "产品思维", "q": "如何提升一个工具类产品的留存？", "t": "核心价值快速触达、习惯养成、数据沉淀带来的迁移成本。"}, {"r": 2, "c": "产品思维", "q": "从 0 到 1 做一个产品，设计师应该关注什么？", "t": "核心场景验证、最小闭环、快速迭代，而非视觉精致度。"}, {"r": 2, "c": "产品思维", "q": "成熟产品的体验优化应该从哪里入手？", "t": "数据漏斗、用户反馈、体验走查，找高频高痛点。"}, {"r": 2, "c": "产品思维", "q": "你怎么看待产品的“功能膨胀”问题？", "t": "做减法的机制：功能分层、个性化、定期清理。"}, {"r": 2, "c": "产品思维", "q": "ToB 和 ToC 产品的设计有什么本质区别？", "t": "决策者与使用者分离、效率与准确优先、复杂权限与配置。"}, {"r": 2, "c": "产品思维", "q": "如何衡量一个设计的商业价值？", "t": "转化、留存、客单价、效率提升、成本降低等可量化指标。"}, {"r": 2, "c": "产品思维", "q": "你认为设计师在团队中的核心价值是什么？", "t": "代表用户、提升决策质量、把模糊问题具象化。"}, {"r": 2, "c": "产品思维", "q": "讲一个你从用户反馈中发现产品机会的例子。", "t": "反馈→聚类分析→验证→方案→结果。"}, {"r": 2, "c": "产品思维", "q": "用户分层运营中，设计可以做什么？", "t": "针对新手、活跃、沉默用户的差异化界面与引导。"}, {"r": 2, "c": "产品思维", "q": "如何设计新用户的首次体验（Onboarding）？", "t": "尽快让用户感受核心价值（Aha moment），减少前置门槛。"}, {"r": 2, "c": "数据与验证", "q": "你如何设计一次 A/B 实验？", "t": "假设、指标、样本量、分流、实验周期、显著性判断。"}, {"r": 2, "c": "数据与验证", "q": "A/B 测试结果不显著，你会怎么办？", "t": "检查样本量与周期、细分人群、反思假设，必要时定性研究补充。"}, {"r": 2, "c": "数据与验证", "q": "定性研究和定量数据冲突时怎么处理？", "t": "定量告诉你发生了什么，定性告诉你为什么；交叉验证。"}, {"r": 2, "c": "数据与验证", "q": "如何搭建一个产品的体验度量体系？", "t": "可参考 HEART 模型：愉悦、参与、接受、留存、任务完成。"}, {"r": 2, "c": "数据与验证", "q": "NPS 有什么局限性？", "t": "无法解释原因、受文化影响、与实际行为关联有限。"}, {"r": 2, "c": "数据与验证", "q": "如何通过漏斗分析找到体验问题？", "t": "定位流失最大的环节，结合录屏和访谈找原因。"}, {"r": 2, "c": "数据与验证", "q": "你如何避免被“虚荣指标”误导？", "t": "关注与核心价值相关的行为指标，而非 PV 等表面数据。"}, {"r": 2, "c": "数据与验证", "q": "如果没有数据支持，你怎么证明你的设计更好？", "t": "可用性测试、专家评审、原型对比测试、启发式评估。"}, {"r": 2, "c": "复杂场景与协作", "q": "同时接到三个紧急需求，你怎么排？", "t": "评估影响与紧急度，和相关方透明沟通，必要时上升。"}, {"r": 2, "c": "复杂场景与协作", "q": "开发说你的设计实现不了，你怎么办？", "t": "先理解技术约束，寻找替代方案，评估体验损失是否可接受。"}, {"r": 2, "c": "复杂场景与协作", "q": "上线前一天发现了一个体验问题，要不要推迟？", "t": "评估严重程度与影响面，给出风险方案供决策。"}, {"r": 2, "c": "复杂场景与协作", "q": "你如何在一个强运营驱动的团队中坚持体验底线？", "t": "建立体验规范和评审红线，用数据说明长期伤害。"}, {"r": 2, "c": "复杂场景与协作", "q": "跨团队项目中，你如何保证体验的一致性？", "t": "统一规范、设计接口人、定期对齐会议。"}, {"r": 2, "c": "复杂场景与协作", "q": "设计评审时，各方意见都不一样，你怎么收敛？", "t": "回到目标和用户，区分主观偏好与客观问题。"}, {"r": 2, "c": "复杂场景与协作", "q": "你接手了一个别人做了一半的项目，怎么开展？", "t": "先梳理已有决策与原因，避免推倒重来，找关键风险。"}, {"r": 2, "c": "复杂场景与协作", "q": "如果业务方要求你抄竞品，你会怎么做？", "t": "分析竞品为什么这样设计，结合自身用户与场景做判断。"}, {"r": 2, "c": "复杂场景与协作", "q": "需求频繁变更，你如何应对？", "t": "理解变更原因，设计模块化方案，建立变更评估流程。"}, {"r": 2, "c": "复杂场景与协作", "q": "如何推动一个不在 KPI 里但对体验很重要的优化？", "t": "找到它与业务指标的关联，小成本试点，用结果说话。"}, {"r": 2, "c": "设计实战题", "q": "请为一个在线点餐小程序做一个设计：缩短从进店到下单的时间。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个视频会议软件做一个设计：为听障用户提供更好的参会体验。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个记账 App做一个设计：让用户坚持记账超过 30 天。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个健身 App做一个设计：提高新用户的第一周留存。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个外卖平台做一个设计：设计订单延误时的安抚与补偿流程。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个银行 App做一个设计：让老年人能独立完成转账。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个网约车 App做一个设计：设计乘客与司机找不到彼此时的交互。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个电商 App做一个设计：重新设计商品详情页，提升加购率。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个在线文档工具做一个设计：设计多人同时编辑时的冲突提示。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个音乐 App做一个设计：设计一个帮助用户发现新歌的功能。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个招聘 App做一个设计：让求职者更快找到合适岗位。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个智能家居 App做一个设计：设计添加新设备的配网流程。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个旅行预订 App做一个设计：设计多人出行的行程共享功能。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个医院挂号小程序做一个设计：减少患者在医院的等待焦虑。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个在线教育 App做一个设计：设计儿童学习时的家长监控功能。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个二手交易平台做一个设计：降低买卖双方的信任成本。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个社交 App做一个设计：设计一个不让人有社交压力的互动功能。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个车载系统做一个设计：设计驾驶中的导航与音乐切换交互。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个智能手表做一个设计：设计久坐提醒功能。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个 SaaS 后台做一个设计：设计批量操作与权限管理。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个数据看板产品做一个设计：让非技术人员能自助生成报表。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个新闻资讯 App做一个设计：设计减少信息茧房的推荐机制。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个快递 App做一个设计：设计包裹丢失时的申诉流程。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个阅读 App做一个设计：设计书籍笔记与分享功能。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个宠物社区做一个设计：设计宠物走失求助功能。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个共享单车 App做一个设计：解决“找不到车”和“还不了车”的问题。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个电子病历系统做一个设计：提升医生录入病历的效率。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个停车 App做一个设计：设计商场停车找车与缴费体验。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个打车 App做一个设计：设计行程中的安全保障功能。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个语言学习 App做一个设计：设计口语练习的即时反馈。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个直播电商平台做一个设计：设计直播间下单流程。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个相册 App做一个设计：设计按人物与地点智能整理照片的功能。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个日历工具做一个设计：设计跨时区会议的安排体验。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个企业 IM 工具做一个设计：设计消息的已读与未读机制。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个 AI 助手产品做一个设计：设计 AI 回答出错时的纠错与反馈机制。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个 AI 绘图工具做一个设计：让新手也能写出好的提示词。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个 AI 写作工具做一个设计：设计 AI 生成内容的修改与采纳流程。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个政务服务 App做一个设计：让市民一次办成跨部门业务。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个酒店前台系统做一个设计：缩短入住登记时间。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个自助点单机做一个设计：为排长队的快餐店提升点单效率。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个 ATM 界面做一个设计：减少用户忘记取卡的情况。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个地铁购票机做一个设计：让外国游客也能顺利购票。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个智能音箱做一个设计：设计无屏幕下的闹钟设置交互。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个 VR 应用做一个设计：设计虚拟空间中的菜单与选择交互。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个外卖骑手端 App做一个设计：让骑手在骑行中安全地接单。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个家庭共享账户做一个设计：设计家庭成员的权限与隐私边界。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个儿童手表做一个设计：设计家长与孩子的通话与定位体验。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个求职简历工具做一个设计：帮助应届生写出第一份简历。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个慈善捐赠平台做一个设计：提升用户对善款去向的信任感。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个心理健康 App做一个设计：设计情绪记录功能，同时保护隐私。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个电商后台做一个设计：设计商家处理退货退款的工作台。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个点评 App做一个设计：设计减少虚假评价的机制。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个短视频 App做一个设计：设计帮助用户控制使用时长的功能。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个航空公司 App做一个设计：设计航班延误时的改签流程。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个票务 App做一个设计：设计热门演出抢票时的排队体验。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个电动车 App做一个设计：设计充电桩查找与预约功能。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个社区团购小程序做一个设计：设计团长管理订单与提货的流程。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个密码管理器做一个设计：设计首次导入密码的引导。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个笔记 App做一个设计：设计从手写到文字整理的流程。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "设计实战题", "q": "请为一个线上问诊平台做一个设计：设计医生与患者的图文问诊体验。说说你的思路。", "t": "5 步作答：澄清目标与约束 → 明确用户与场景 → 拆解关键问题 → 提出 1-2 个方案并说明取舍 → 如何衡量效果。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价微信的“朋友圈”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价微信的“聊天记录迁移”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价支付宝的“首页”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价淘宝的“购物车”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价抖音的“评论区”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价小红书的“搜索”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价美团的“外卖下单流程”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价高德地图的“导航切换路线”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价滴滴的“叫车等待界面”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价网易云音乐的“每日推荐”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价B站的“弹幕”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价飞书的“文档评论”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价钉钉的“已读未读”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价Keep的“训练课程页”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价携程的“机票改签”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价12306的“候补购票”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价知乎的“回答编辑器”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价微博的“热搜”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价拼多多的“砍一刀”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价闲鱼的“发布商品”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价得物的“鉴别流程”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价Notion的“页面嵌套结构”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价Figma的“多人协作光标”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价iOS的“灵动岛”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价iOS的“控制中心”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价Apple Watch的“通知交互”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价Airbnb的“搜索与筛选”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价Spotify的“播放列表”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价ChatGPT 类对话产品的“历史对话管理”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "产品体验评析", "q": "你如何评价Duolingo的“连续打卡机制”设计？如果由你来优化，会改什么？", "t": "先说它解决了什么问题（肯定优点）→ 指出 1-2 个具体痛点及原因 → 给出可落地的改进 → 说明如何验证。"}, {"r": 2, "c": "竞品分析", "q": "对比微信读书和Kindle的“阅读体验”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比美团和饿了么的“商家详情页”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比高德地图和百度地图的“导航界面”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比飞书和钉钉的“消息与文档的结合”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比小红书和抖音的“内容发布流程”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比淘宝和京东的“商品搜索”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比Notion和飞书文档的“编辑器”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比网易云音乐和QQ 音乐的“播放页”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比Keep和Nike Training的“课程推荐”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比携程和飞猪的“酒店预订”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比Figma和Sketch的“组件管理”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比iOS和Android的“通知管理”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比B站和YouTube的“视频播放器”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比滴滴和Uber的“叫车流程”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比支付宝和微信支付的“付款码”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比Airbnb和Booking的“房源详情页”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比Duolingo和多邻国以外的背单词 App的“学习激励机制”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比ChatGPT和Claude 等其他 AI 助手的“对话界面”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比Apple Music和Spotify的“音乐发现”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "竞品分析", "q": "对比拼多多和淘宝特价版的“下单流程”，你更认可哪个？为什么？", "t": "统一维度对比（目标用户、核心流程、效率、情感）→ 结合各自定位解释差异 → 给出判断，而非简单说好坏。"}, {"r": 2, "c": "数据诊断", "q": "一个新上线的 App的注册转化率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个电商 App的下单转化率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个内容社区的次日留存突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个本地生活平台的搜索点击率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个票务平台的支付成功率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个短视频平台的视频完播率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个刚上线的 AI 功能的功能使用率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个视频会员产品的会员续费率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个银行 App的客服咨询量（上升）突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个 UGC 社区的发布量突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个工具类 App的日活突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个服饰电商的退货率（上升）突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个 SaaS 后台的任务完成率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个资讯 App的分享率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个招聘平台的消息回复率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个生鲜电商的加购率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个在线教育 App的开课率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个外卖 App的推送点击率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个酒店平台的评价率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 2, "c": "数据诊断", "q": "一个改版后的 App的首页点击率突然出现明显变化，作为设计师你会如何排查和应对？", "t": "先确认数据真实（埋点/口径）→ 拆维度（时间、渠道、版本、人群、平台）→ 内外部因素（发版、活动、竞品、节假日）→ 定位环节 → 定性补充 → 提出方案并验证。"}, {"r": 3, "c": "职业规划与动机", "q": "你未来 3 到 5 年的职业规划是什么？", "t": "方向清晰（专业线或管理线），与公司发展路径匹配，有阶段性目标。"}, {"r": 3, "c": "职业规划与动机", "q": "你为什么离开上一家公司？", "t": "积极归因：寻求成长与更匹配的平台，不抱怨前东家。"}, {"r": 3, "c": "职业规划与动机", "q": "你为什么选择我们公司？", "t": "具体到业务、产品、团队或文化，体现提前做过功课。"}, {"r": 3, "c": "职业规划与动机", "q": "你对这个岗位的理解是什么？", "t": "核心职责、挑战和你能带来的价值。"}, {"r": 3, "c": "职业规划与动机", "q": "如果入职，前 90 天你打算怎么做？", "t": "30 天了解业务与团队、60 天做出小成果、90 天提出改进规划。"}, {"r": 3, "c": "职业规划与动机", "q": "你更想走专业路线还是管理路线？", "t": "真实想法与依据，说明在现阶段的准备。"}, {"r": 3, "c": "职业规划与动机", "q": "你现在手上还有其他 offer 吗？", "t": "如实但有分寸，表达对本岗位的优先意向。"}, {"r": 3, "c": "职业规划与动机", "q": "你觉得自己最大的优点和缺点是什么？", "t": "缺点要真实且在改进中，不要说伪缺点。"}, {"r": 3, "c": "职业规划与动机", "q": "你期望在这个岗位上学到什么？", "t": "与岗位挑战相关的具体能力，避免只谈索取。"}, {"r": 3, "c": "职业规划与动机", "q": "过去一年你读过最有收获的一本书或文章是什么？", "t": "讲它如何改变了你的工作方式。"}, {"r": 3, "c": "职业规划与动机", "q": "你理想的工作环境是什么样的？", "t": "与公司文化做匹配，说出具体特征。"}, {"r": 3, "c": "职业规划与动机", "q": "如果这次面试没通过，你会怎么想？", "t": "成熟心态：复盘、继续提升，表达对公司的兴趣。"}, {"r": 3, "c": "职业规划与动机", "q": "你平时如何保持专业成长？", "t": "具体渠道与实践：阅读、社区、副业项目、分享输出。"}, {"r": 3, "c": "职业规划与动机", "q": "你认为五年后设计师这个职业会是什么样？", "t": "结合 AI 与行业趋势，谈设计师价值的变化和你的准备。"}, {"r": 3, "c": "职业规划与动机", "q": "你的期望薪资是多少？依据是什么？", "t": "基于市场行情、自身能力和当前薪资给出合理区间。"}, {"r": 3, "c": "团队与领导力", "q": "你如何与一个强势的产品经理合作？", "t": "尊重专业分工、以用户和数据为依据、建立信任。"}, {"r": 3, "c": "团队与领导力", "q": "你和上级意见不一致时会怎么处理？", "t": "充分表达依据，接受决策后全力执行，必要时用结果复盘。"}, {"r": 3, "c": "团队与领导力", "q": "你带过新人吗？怎么带的？", "t": "目标设定、示范、反馈、逐步放手。"}, {"r": 3, "c": "团队与领导力", "q": "如果团队中有人总是拖进度，你会怎么做？", "t": "了解原因、明确期望、提供支持，必要时升级。"}, {"r": 3, "c": "团队与领导力", "q": "你如何在团队中建立设计的影响力？", "t": "解决真实业务问题、让设计决策透明、主动分享。"}, {"r": 3, "c": "团队与领导力", "q": "讲一次你和同事发生冲突的经历。", "t": "冲突原因、你的处理方式、结果与反思，聚焦事而非人。"}, {"r": 3, "c": "团队与领导力", "q": "你更喜欢独立工作还是团队协作？", "t": "两者都能胜任，举例说明在不同场景的表现。"}, {"r": 3, "c": "团队与领导力", "q": "如果让你搭建一个设计团队，你会怎么规划？", "t": "业务需求→能力模型→人员结构→协作机制→成长体系。"}, {"r": 3, "c": "团队与领导力", "q": "如何评价一个设计师的绩效？", "t": "业务结果、专业质量、协作影响力、成长性。"}, {"r": 3, "c": "团队与领导力", "q": "你如何给别人的设计提反馈？", "t": "先理解目标、具体指出问题与原因、给建议而非命令。"}, {"r": 3, "c": "团队与领导力", "q": "你如何接受别人对你设计的批评？", "t": "区分意见与事实，追问原因，不防御。"}, {"r": 3, "c": "团队与领导力", "q": "你如何向不懂设计的老板汇报设计方案？", "t": "从业务问题和目标出发，少讲视觉细节，多讲预期效果与风险。"}, {"r": 3, "c": "压力与情境题", "q": "讲一次你在巨大压力下完成任务的经历。", "t": "压力来源、你的应对策略、结果，体现韧性与方法。"}, {"r": 3, "c": "压力与情境题", "q": "如果入职后发现工作和预期不一样，你会怎么办？", "t": "主动沟通、调整心态、在现有工作中找成长点。"}, {"r": 3, "c": "压力与情境题", "q": "你犯过的最大的工作失误是什么？", "t": "真实、承担责任、补救措施、机制改进。"}, {"r": 3, "c": "压力与情境题", "q": "如果项目上线后数据很差，老板很不满意，你怎么办？", "t": "冷静复盘、快速定位问题、提出补救方案，主动承担。"}, {"r": 3, "c": "压力与情境题", "q": "连续加班一个月，你会有什么感受？如何调整？", "t": "坦诚表达，体现自我管理与可持续工作的意识。"}, {"r": 3, "c": "压力与情境题", "q": "你如何处理工作与生活的平衡？", "t": "时间管理方法，同时表达对关键时期投入的理解。"}, {"r": 3, "c": "压力与情境题", "q": "如果你的方案被否了三次，你还会坚持吗？", "t": "反思否定原因，判断是方向问题还是表达问题，适时坚持或调整。"}, {"r": 3, "c": "压力与情境题", "q": "突然被调到一个你不熟悉的业务，你会如何快速上手？", "t": "学习业务、访谈关键人、走查产品、找到快速见效的切入点。"}, {"r": 3, "c": "压力与情境题", "q": "如果你发现产品中有损害用户利益的设计，你会怎么做？", "t": "表明立场，提出替代方案，用长期风险说服决策者。"}, {"r": 3, "c": "压力与情境题", "q": "你的工作被别人抢功了，你会怎么处理？", "t": "冷静、沟通、让工作过程可见，关注长期而非一时。"}, {"r": 3, "c": "压力与情境题", "q": "面试官：我觉得你的作品集一般，你怎么看？", "t": "压力面：不慌乱，追问具体原因，补充说明亮点和思考。"}, {"r": 3, "c": "压力与情境题", "q": "给你一周时间，你能为我们的产品做什么？", "t": "提前研究，提出一两个具体可落地的改进点。"}, {"r": 3, "c": "行业认知与视野", "q": "你最近关注的行业趋势有哪些？", "t": "AI、多模态交互、隐私、可持续设计等，谈对你工作的影响。"}, {"r": 3, "c": "行业认知与视野", "q": "AI 时代，交互设计师的核心竞争力是什么？", "t": "问题定义、判断力、系统思维、对人的理解，以及驾驭 AI 工具的能力。"}, {"r": 3, "c": "行业认知与视野", "q": "你如何看待对话式界面（CUI）替代图形界面（GUI）的说法？", "t": "各有适用场景，未来是融合；谈具体例子。"}, {"r": 3, "c": "行业认知与视野", "q": "设计 AI 产品和传统产品有什么不同？", "t": "不确定性输出、信任建立、可控性、反馈与纠错、预期管理。"}, {"r": 3, "c": "行业认知与视野", "q": "你觉得我们公司的产品体验有什么问题？", "t": "提前使用，客观指出问题并给出建议，语气建设性。"}, {"r": 3, "c": "行业认知与视野", "q": "你最欣赏的一款产品是什么？为什么？", "t": "从用户、商业、体验三个层面分析，而不只是好看。"}, {"r": 3, "c": "行业认知与视野", "q": "你最欣赏的设计师或设计团队是谁？", "t": "说出具体作品和你从中学到的方法。"}, {"r": 3, "c": "行业认知与视野", "q": "你怎么看“设计驱动”这个说法？", "t": "设计驱动不是设计说了算，而是以用户洞察驱动决策。"}, {"r": 3, "c": "行业认知与视野", "q": "国内和海外产品的设计风格差异在哪里？原因是什么？", "t": "信息密度、运营属性、用户习惯与商业模式差异。"}, {"r": 3, "c": "行业认知与视野", "q": "隐私和个性化推荐如何平衡？", "t": "透明告知、用户可控、最小化收集、价值交换。"}, {"r": 3, "c": "行业认知与视野", "q": "可持续设计或包容性设计，你怎么理解？", "t": "让更多人、在更多情境下能使用，并考虑长期社会影响。"}, {"r": 3, "c": "行业认知与视野", "q": "空间计算（如 Vision Pro）会如何改变交互设计？", "t": "眼动+手势、空间层级、舒适度与疲劳、新的设计规范。"}, {"r": 3, "c": "价值观与文化", "q": "你认为一个好的团队文化是什么样的？", "t": "开放、坦诚、对结果负责，举例说明你如何参与建设。"}, {"r": 3, "c": "价值观与文化", "q": "你在工作中最看重什么？", "t": "成长、影响力、团队、使命等，与公司文化呼应。"}, {"r": 3, "c": "价值观与文化", "q": "你如何定义“做好一件事”？", "t": "目标达成、过程可复盘、对他人有帮助。"}, {"r": 3, "c": "价值观与文化", "q": "你会如何向一个十岁的孩子解释你的工作？", "t": "考察表达能力，用简单类比讲清价值。"}, {"r": 3, "c": "价值观与文化", "q": "你认为设计师需要有“品味”吗？品味从何而来？", "t": "需要；来自大量观察、实践、反思与跨领域积累。"}, {"r": 3, "c": "价值观与文化", "q": "如果用户需求和公司利益冲突，你站在哪边？", "t": "寻找共赢，坚持不伤害用户底线，长期价值一致。"}, {"r": 3, "c": "价值观与文化", "q": "你做过的最有意义的一件事是什么？", "t": "体现价值观，不局限于工作。"}, {"r": 3, "c": "价值观与文化", "q": "工作之外你有什么兴趣爱好？", "t": "真实，能体现观察力或持续性的更好。"}, {"r": 3, "c": "反问环节", "q": "你还有什么问题想问我们吗？", "t": "可问：团队目前最大的挑战、对这个岗位前半年的期待、设计在团队中的角色、评价标准。"}, {"r": 3, "c": "反问环节", "q": "（反问练习）如何向面试官提问团队的设计成熟度？", "t": "例如：设计师参与需求的阶段、是否有设计系统、用户研究的投入。"}, {"r": 3, "c": "反问环节", "q": "（反问练习）如何得体地询问面试结果和后续流程？", "t": "例如：接下来的流程和时间节点是怎样的？"}, {"r": 3, "c": "反问环节", "q": "（反问练习）如何询问这个岗位的晋升与成长路径？", "t": "例如：团队中优秀设计师的成长路径是怎样的？"}, {"r": 3, "c": "行为面试", "q": "讲一个你“主动承担超出职责范围的工作”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“在信息不完整时做出决策”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“说服别人改变想法”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“快速学习一项新技能”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“把一个复杂问题讲清楚”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“放弃一个自己很喜欢的方案”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“在截止日期前发现重大问题”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“帮助团队提升效率”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“处理用户的负面反馈”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“从失败中恢复”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“推动跨部门合作”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“坚持自己的专业判断”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“处理多个优先级冲突”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“给上级提出不同意见”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“在资源不足的情况下完成目标”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“建立一项团队流程或规范”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“赢得一个难相处同事的信任”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“把模糊的需求变成清晰的方案”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“对一个已上线的设计进行纠错”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 3, "c": "行为面试", "q": "讲一个你“在团队中分享知识并产生影响”的具体经历。", "t": "用 STAR：情境（Situation）、任务（Task）、行动（Action，重点讲你做了什么）、结果（Result，尽量量化），最后补一句反思。"}, {"r": 1, "c": "交互基础", "q": "什么是用户心流？如何在产品中营造？", "t": "目标清晰、即时反馈、难度与能力匹配、减少打断。"}, {"r": 1, "c": "交互基础", "q": "什么是情感化设计？有哪三个层次？", "t": "诺曼：本能层、行为层、反思层，各举例。"}, {"r": 1, "c": "交互基础", "q": "设计中的“一致性”包括哪几个层面？", "t": "视觉一致、交互一致、内部一致、外部（平台）一致。"}, {"r": 1, "c": "交互基础", "q": "你如何理解“少即是多”？有没有反例？", "t": "减少认知负担，但过度简化会损失可发现性与效率。"}, {"r": 1, "c": "交互基础", "q": "拟物化、扁平化、新拟态各有什么优缺点？", "t": "可识别性 vs 简洁 vs 对比度与可访问性问题。"}, {"r": 1, "c": "交互基础", "q": "如何设计一个让人放心的支付体验？", "t": "安全感知、信息透明、确认机制、结果反馈与异常处理。"}, {"r": 1, "c": "交互基础", "q": "通知权限请求应该在什么时机弹出？", "t": "在用户理解价值的时刻前置说明（软请求），而非首次打开即弹。"}, {"r": 1, "c": "交互基础", "q": "列表页和卡片布局各适合什么内容？", "t": "列表利于扫读和对比，卡片适合图文与异构内容。"}, {"r": 1, "c": "交互基础", "q": "如何设计一个好的设置页？", "t": "分组清晰、常用置顶、搜索、即时生效反馈、默认值合理。"}, {"r": 1, "c": "交互基础", "q": "如何优化一个转化率很低的注册流程？", "t": "减少字段、第三方登录、延迟注册、价值前置、错误提示优化。"}, {"r": 1, "c": "交互基础", "q": "什么是 Hook 上瘾模型？你怎么看它的伦理问题？", "t": "触发、行动、多变奖励、投入；区分帮助用户养成好习惯与操控。"}, {"r": 1, "c": "交互基础", "q": "设计中“默认值”有多重要？", "t": "大多数用户不改默认值，默认值直接决定体验与结果。"}, {"r": 1, "c": "交互基础", "q": "如何设计一个清晰的价格展示？", "t": "主次价格、原价划线、优惠说明透明、避免误导。"}, {"r": 1, "c": "交互基础", "q": "长列表如何帮助用户快速定位内容？", "t": "搜索、筛选、排序、索引条、分组吸顶。"}, {"r": 1, "c": "交互基础", "q": "什么时候用底部导航栏，什么时候用汉堡菜单？", "t": "核心入口 3-5 个且需高频切换用底部导航；次要入口收进菜单。"}, {"r": 1, "c": "交互基础", "q": "如何设计一个好用的筛选功能？", "t": "常用条件外露、已选状态可见、结果数量预告、一键重置。"}, {"r": 1, "c": "交互基础", "q": "Toast、Snackbar、Banner 和 Dialog 的区别是什么？", "t": "按打断程度、是否可操作、停留时长区分。"}, {"r": 1, "c": "交互基础", "q": "如何设计倒计时类交互，避免给用户造成焦虑？", "t": "说明原因与后果、提供延长或稍后选项、避免虚假紧迫感。"}, {"r": 1, "c": "交互基础", "q": "拖拽交互需要哪些反馈？", "t": "可拖拽暗示、拖起状态、放置区高亮、位置预览、撤销。"}, {"r": 1, "c": "交互基础", "q": "如何处理用户输入中的错误，比如手机号格式？", "t": "自动格式化、宽容输入、实时校验而非提交后报错。"}, {"r": 1, "c": "交互基础", "q": "如何设计一个好的引导（新手教程）？", "t": "情境化引导优于一次性轮播，可跳过，与真实任务结合。"}, {"r": 1, "c": "交互基础", "q": "横屏和竖屏切换时，界面需要注意什么？", "t": "布局重排、保持当前上下文、控件位置合理。"}, {"r": 1, "c": "交互基础", "q": "如何设计内容的“返回顶部”与“记住浏览位置”？", "t": "长页面提供返回顶部，返回列表时保持滚动位置。"}, {"r": 1, "c": "交互基础", "q": "你如何理解“容错设计”？", "t": "预防出错（约束、默认值）+ 出错可恢复（撤销、草稿保存）。"}, {"r": 1, "c": "交互基础", "q": "文字链接、文字按钮、图标按钮如何选用？", "t": "按操作重要性和空间：主操作用实体按钮，次要用文字按钮。"}, {"r": 1, "c": "交互基础", "q": "如何设计一个让用户愿意填写的个人资料页？", "t": "说明用途、分步完善、进度激励、隐私可控。"}, {"r": 1, "c": "交互基础", "q": "交互设计中的“反馈”有哪几种层次？", "t": "即时视觉反馈、状态变化反馈、结果反馈、系统级通知。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你的作品集里，交互设计和视觉设计各占多少比重？", "t": "说明自身定位，与岗位侧重点匹配。"}, {"r": 1, "c": "自我介绍与作品集", "q": "这个项目中你是如何获取需求背景的？", "t": "参与需求评审、看数据、访谈业务方，体现主动性。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你在作品集中用了很多流程图，能讲讲其中一个关键节点的设计吗？", "t": "挑一个有分支和异常的节点，讲清处理逻辑。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你的项目中有没有被用户吐槽过的设计？", "t": "真实案例，说明你如何响应和改进。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你在团队中通常扮演什么角色？", "t": "执行者、推动者、协调者等，用事例说明。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你最近在学习什么新的设计技能？", "t": "具体技能、学习方式、是否已应用到工作中。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你平时怎么积累设计灵感？", "t": "有体系的方法：产品体验记录、案例库、跨领域观察。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你做过最复杂的一个交互流程是什么？", "t": "讲复杂度来源（角色、状态、分支）和你的梳理方法。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你如何向面试官证明作品集中的设计是你自己做的？", "t": "讲清过程细节、废弃方案与决策依据，细节越多越可信。"}, {"r": 1, "c": "自我介绍与作品集", "q": "你的作品集最想让我看到你的什么能力？", "t": "明确卖点，与岗位需求对应。"}, {"r": 2, "c": "项目深挖", "q": "如果用一句话总结这个项目解决的问题，你会怎么说？", "t": "练习一句话提炼：为谁、在什么场景、解决什么问题、带来什么价值。"}, {"r": 2, "c": "项目深挖", "q": "这个项目里有没有你坚持下来、事后证明是对的决定？", "t": "讲坚持的依据和如何获得支持。"}, {"r": 2, "c": "项目深挖", "q": "这个项目有没有你妥协了、事后后悔的决定？", "t": "真实反思与后续改进。"}, {"r": 2, "c": "项目深挖", "q": "你在项目中如何处理边界和异常情况？", "t": "梳理方法：状态矩阵、用户路径穷举、与开发对齐。"}, {"r": 2, "c": "项目深挖", "q": "这个项目的设计规范是你建立的吗？", "t": "说明规范的范围、推动过程和使用情况。"}, {"r": 2, "c": "项目深挖", "q": "项目中用户研究的结论有没有推翻你最初的假设？", "t": "体现对假设的开放态度与基于证据的调整。"}, {"r": 2, "c": "项目深挖", "q": "如果给这个项目打分，满分 10 分你给几分？为什么？", "t": "客观评估，指出亮点和不足。"}, {"r": 2, "c": "项目深挖", "q": "这个项目中，你如何定义“成功”？", "t": "设计目标、衡量指标与达成情况。"}, {"r": 2, "c": "产品思维", "q": "如果给你一个全新的产品方向，你会如何做市场和用户调研？", "t": "桌面研究、竞品、用户访谈、问卷验证、机会评估。"}, {"r": 2, "c": "产品思维", "q": "如何判断一个功能应该做成独立 App 还是放在主 App 里？", "t": "用户重合度、使用频次、品牌战略、流量协同。"}, {"r": 2, "c": "产品思维", "q": "免费功能和付费功能的边界怎么划？", "t": "免费保证核心价值体验，付费提供增值与效率，避免削弱基础体验。"}, {"r": 2, "c": "产品思维", "q": "你如何看待“用户越多，产品体验越难做”？", "t": "用户分层、个性化、渐进式复杂度。"}, {"r": 2, "c": "产品思维", "q": "设计如何帮助降低客服成本？", "t": "高频问题前置解决、自助服务、清晰的状态与说明。"}, {"r": 2, "c": "产品思维", "q": "如何设计一个产品的推荐理由，让用户更信任推荐？", "t": "可解释性、个性化依据、用户可反馈与调整。"}, {"r": 2, "c": "产品思维", "q": "一个产品要国际化，设计上需要考虑什么？", "t": "文字长度、阅读方向、日期货币格式、文化与色彩含义、本地化习惯。"}, {"r": 3, "c": "职业规划与动机", "q": "你觉得自己目前处在职业生涯的什么阶段？", "t": "清晰的自我定位与下一阶段目标。"}, {"r": 3, "c": "职业规划与动机", "q": "如果我们给你的职级比你期望的低，你会接受吗？", "t": "表达对成长和平台的重视，同时说明期望与依据。"}, {"r": 3, "c": "职业规划与动机", "q": "你对加班怎么看？", "t": "理性表达，关注效率与阶段性投入。"}, {"r": 3, "c": "职业规划与动机", "q": "你在上一家公司的绩效怎么样？", "t": "如实，结合具体成果说明。"}, {"r": 3, "c": "职业规划与动机", "q": "你理想中的上级是什么样的？", "t": "描述具体特质，避免苛刻，体现自我驱动。"}, {"r": 3, "c": "职业规划与动机", "q": "你的家人支持你换工作吗？", "t": "简短回答，体现稳定性。"}, {"r": 3, "c": "职业规划与动机", "q": "如果你同时拿到我们和另一家公司的 offer，你会怎么选？", "t": "说明决策维度，表达对本公司的兴趣点。"}, {"r": 3, "c": "职业规划与动机", "q": "你过去换工作的频率是怎样的？原因是什么？", "t": "解释每次变动的逻辑，体现稳定和成长的一致性。"}, {"r": 3, "c": "职业规划与动机", "q": "你能接受多久的入职等待时间？", "t": "给出具体时间，体现对现有工作的负责交接。"}, {"r": 3, "c": "职业规划与动机", "q": "如果入职后让你做大量执行性工作，你会怎么想？", "t": "理解阶段需要，在执行中找到提升与影响空间。"}, {"r": 3, "c": "团队与领导力", "q": "你如何让开发同学更认同你的设计？", "t": "让开发早参与、讲清背后原因、尊重技术约束。"}, {"r": 3, "c": "团队与领导力", "q": "当团队士气低落时，你会做什么？", "t": "了解原因、小胜利激励、清晰目标、真诚沟通。"}, {"r": 3, "c": "团队与领导力", "q": "你如何在远程或异地团队中协作？", "t": "异步文档、清晰的交付标准、定期同步。"}, {"r": 3, "c": "团队与领导力", "q": "你如何培养团队的用户意识？", "t": "邀请参与访谈、分享用户录像、建立用户反馈看板。"}, {"r": 3, "c": "团队与领导力", "q": "如何让设计在需求早期就参与进来？", "t": "主动参与业务讨论，用快速原型帮助澄清需求，证明价值。"}, {"r": 3, "c": "团队与领导力", "q": "你如何对待比你资历浅但很有想法的同事？", "t": "开放倾听、给予机会、共同验证。"}, {"r": 3, "c": "团队与领导力", "q": "你如何处理一个设计师同事的方案明显有问题，但他很坚持？", "t": "私下沟通、用证据和目标说话、必要时用测试验证。"}, {"r": 3, "c": "团队与领导力", "q": "你怎么看设计团队和业务团队的汇报关系？", "t": "集中式与嵌入式各自优劣，结合公司阶段谈看法。"}, {"r": 3, "c": "压力与情境题", "q": "如果你的直属上级给你的方向明显是错的，你会怎么做？", "t": "先确认理解，提出依据和替代方案，尊重最终决策并记录风险。"}, {"r": 3, "c": "压力与情境题", "q": "你被要求在两天内完成一个原本需要两周的项目，你会怎么办？", "t": "确认核心目标、砍范围、分阶段交付、同步风险。"}, {"r": 3, "c": "压力与情境题", "q": "面试官：我觉得你的经历和我们的岗位不太匹配，你怎么说服我？", "t": "找到可迁移能力，举具体例子，展示学习速度。"}, {"r": 3, "c": "压力与情境题", "q": "如果入职后业务突然被砍，你会怎么办？", "t": "保持心态、快速转向、把经验沉淀为可复用的方法。"}, {"r": 3, "c": "压力与情境题", "q": "你如何应对一个总是临时改需求的业务方？", "t": "理解原因、建立变更评估机制、提前对齐范围。"}, {"r": 3, "c": "压力与情境题", "q": "你在工作中最受不了什么样的人？", "t": "避免攻击具体人，谈行为与你的应对方式。"}, {"r": 3, "c": "压力与情境题", "q": "请用一分钟说服我录用你。", "t": "核心能力 + 与岗位的匹配 + 一个有力证据 + 你的意愿。"}, {"r": 3, "c": "行业认知与视野", "q": "你怎么看待“设计师会被 AI 取代”的说法？", "t": "区分可被自动化的执行与需要判断力的工作，谈你的应对。"}, {"r": 3, "c": "行业认知与视野", "q": "你最近体验过的最惊艳的 AI 产品是什么？", "t": "具体功能、体验亮点、可改进之处。"}, {"r": 3, "c": "行业认知与视野", "q": "你如何看待体验设计中的“伦理”问题？", "t": "暗黑模式、成瘾设计、隐私；设计师的责任与边界。"}, {"r": 3, "c": "行业认知与视野", "q": "如果让你预测下一个交互范式，你会说什么？", "t": "有依据地推测，如语音、空间计算、Agent 式交互。"}, {"r": 1, "c": "设计流程与方法", "q": "你如何做启发式评估（专家走查）？", "t": "选定原则清单、多名评估者独立走查、汇总问题并按严重程度分级。"}, {"r": 1, "c": "设计流程与方法", "q": "服务蓝图和用户旅程地图有什么区别？", "t": "服务蓝图增加前台、后台与支持流程，用于跨部门服务设计。"}, {"r": 1, "c": "设计流程与方法", "q": "JTBD（Jobs to be Done）框架怎么用？", "t": "关注用户想完成的任务和情境，而非人口属性，用于发现真实需求。"}, {"r": 1, "c": "设计流程与方法", "q": "你如何判断一个设计方案“够好了”可以交付？", "t": "目标达成、关键路径验证、边界覆盖、团队对齐。"}, {"r": 1, "c": "设计流程与方法", "q": "什么是设计债务？如何偿还？", "t": "长期积累的不一致与临时方案；定期盘点、纳入迭代、组件化治理。"}, {"r": 1, "c": "设计流程与方法", "q": "你如何复盘一个项目？", "t": "目标 vs 结果、做得好的、不足、可沉淀的方法，形成文档。"}];
+const ms=(n,c="")=>`<span class="ms ${c}">${n}</span>`;
+const ROUND = {
+  1:{name:"一面",sub:"设计基本功",who:"设计组长",desc:"作品集、交互原则、设计心理、组件细节、研究方法",c:"--c-blue",s:"--c-blue-s",i:"crop_free"},
+  2:{name:"二面",sub:"项目深挖与实战",who:"设计主管",desc:"项目追问、产品思维、现场设计题、竞品与数据诊断",c:"--c-green",s:"--c-green-s",i:"draw"},
+  3:{name:"终面",sub:"总监 / HR 面",who:"设计总监",desc:"职业规划、团队协作、压力题、行业视野、反问",c:"--c-purple",s:"--c-purple-s",i:"diamond"}
+};
+const FLOW = {1:8,2:8,3:6};
+QS.forEach((q,i)=>q.id=i);
+
+const store = {
+  get(k,d){try{const v=localStorage.getItem("dmi_"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("dmi_"+k,JSON.stringify(v))}catch(e){}}
+};
+let favs = new Set(store.get("favs",[]));
+const S = Object.assign({auto:true,rate:1.1,next:0,shuf:true,tip:false,voice:""}, store.get("set",{}));
+const $ = s=>document.querySelector(s);
+
+/* ---------- 首页 ---------- */
+function renderMods(){
+  const m=$("#mods"); m.innerHTML="";
+  const add=(icon,c,s,title,desc,count,fn)=>{
+    const b=document.createElement("button"); b.className="mod st";
+    b.style.setProperty("--tc",`var(${c})`); b.style.setProperty("--ts",`var(${s})`);
+    b.innerHTML=`<div class="av">${ms(icon)}</div><div><b>${title}</b><span class="d">${desc}</span></div><span class="cnt">${count}${ms("chevron_right","sm")}</span>`;
+    b.onclick=fn; m.appendChild(b);
+  };
+  [1,2,3].forEach(r=>{const R=ROUND[r]; add(R.i,R.c,R.s,`${R.name} · ${R.sub}`,R.desc,QS.filter(q=>q.r==r).length+" 题",()=>start("round",r))});
+  add("bookmark","--c-coral","--c-coral-s","我的收藏","收藏的题目和你写的框架笔记",favs.size+" 题",()=>start("fav"));
+}
+function bindSettings(){
+  const a=$("#sAuto"),r=$("#sRate"),n=$("#sNext"),sh=$("#sShuf"),t=$("#sTip");
+  a.checked=S.auto; r.value=S.rate; n.value=String(S.next); sh.checked=S.shuf; t.checked=S.tip;
+  const rv=()=>$("#rateV").textContent=Number(S.rate).toFixed(1)+" 倍"; rv();
+  a.onchange=()=>{S.auto=a.checked;save()}; r.oninput=()=>{S.rate=+r.value;rv();save()};
+  n.onchange=()=>{S.next=+n.value;save()}; sh.onchange=()=>{S.shuf=sh.checked;save()}; t.onchange=()=>{S.tip=t.checked;save()};
+  $("#sVoice").onchange=e=>{S.voice=e.target.value; save(); applyVoice(); speak("你好，我是今天的面试官。")};
+  $("#tryVoice").onclick=()=>speak("你好，我是今天的面试官。请先做一个简单的自我介绍。");
+  $("#startFlow").onclick=()=>start("flow");
+}
+function save(){store.set("set",S); syncBar()}
+
+/* ---------- 中文语音 ---------- */
+const TTS = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+const ZH_LANG=/^(zh|cmn|yue)([-_]|$)/i;
+const ZH_NAME=/chinese|mandarin|cantonese|中文|普通话|普通話|國語|国语|粤|廣東|tingting|ting-ting|sin-ji|sinji|mei-jia|meijia|li-mu|limu|yu-shu|yushu|xiaoxiao|xiaoyi|yunxi|yunyang|huihui|kangkang|yaoyao|lili|shasha/i;
+let voices=[], zhVoices=[], voice=null;
+const isZh=v=>ZH_LANG.test(v.lang||"")||ZH_NAME.test(v.name||"");
+function rank(v){ // 优先普通话（大陆），其次台湾，再粤语；本地语音优先
+  const l=(v.lang||"").toLowerCase().replace("_","-");
+  let s=0;
+  if(/zh-cn|cmn-hans|zh-hans|cmn-cn/.test(l)) s+=30; else if(/zh-tw|cmn-hant|zh-hant/.test(l)) s+=20; else if(/hk|yue/.test(l)) s+=10; else s+=15;
+  if(/xiaoxiao|yunxi|tingting|ting-ting|li-mu|yu-shu|google/i.test(v.name)) s+=5;
+  if(v.localService) s+=2;
+  return -s;
+}
+function loadVoices(){
+  if(!TTS) return;
+  voices=speechSynthesis.getVoices()||[];
+  zhVoices=voices.filter(isZh).sort((a,b)=>rank(a)-rank(b));
+  fillVoiceSelect(); applyVoice();
+}
+function fillVoiceSelect(){
+  const sel=$("#sVoice"); sel.innerHTML="";
+  const opt=(v,label)=>{const o=document.createElement("option"); o.value=v; o.textContent=label; return o};
+  if(zhVoices.length){
+    const g=document.createElement("optgroup"); g.label="中文";
+    zhVoices.forEach(v=>g.appendChild(opt(v.voiceURI,`${v.name}（${v.lang}）`))); sel.appendChild(g);
+  } else sel.appendChild(opt("","系统默认（中文）"));
+  const others=voices.filter(v=>!isZh(v));
+  if(others.length){const g=document.createElement("optgroup"); g.label="其他语言（读不了中文）"; others.forEach(v=>g.appendChild(opt(v.voiceURI,`${v.name}（${v.lang}）`))); sel.appendChild(g)}
+}
+function applyVoice(){
+  voice = (S.voice && voices.find(v=>v.voiceURI===S.voice)) || zhVoices[0] || null;
+  // 已保存的是非中文声音时，自动换回中文
+  if(voice && !isZh(voice) && zhVoices.length){voice=zhVoices[0]}
+  const sel=$("#sVoice"); sel.value=voice?voice.voiceURI:"";
+  const info=$("#voiceInfo"), w=$("#voiceWarn");
+  if(!TTS){info.textContent="当前环境不支持朗读"; showWarn(true); return}
+  if(zhVoices.length){info.textContent=`已找到 ${zhVoices.length} 个中文声音`; w.hidden=true}
+  else if(voices.length){info.textContent="设备上没有中文语音包"; showWarn(false)}
+  else {info.textContent="将使用系统默认中文语音"; w.hidden=true}
+}
+function showWarn(noTTS){
+  const w=$("#voiceWarn"); w.hidden=false;
+  w.innerHTML = ms("warning") + (noTTS
+    ? `<div><b>当前环境不支持语音朗读</b><p>用手机自带的 Safari 或 Chrome 打开这个页面就能朗读。</p></div>`
+    : `<div><b>设备上没有中文语音，所以会用英文声音读</b><p>安装中文语音后回到这里刷新页面：</p><ol><li>iPhone：设置 → 辅助功能 → 朗读内容 → 声音 → 中文 → 下载“婷婷”或“李慕”</li><li>安卓：设置 → 文字转语音 → Google 语音服务 → 安装语音数据 → 中文（普通话）</li><li>电脑 Chrome：自带“Google 普通话”，直接在上方选择即可</li></ol></div>`);
+}
+if(TTS){loadVoices(); speechSynthesis.addEventListener?speechSynthesis.addEventListener("voiceschanged",loadVoices):speechSynthesis.onvoiceschanged=loadVoices; setTimeout(loadVoices,800); setTimeout(loadVoices,2500)}
+let speakToken=0;
+function speak(text,onend){
+  if(!TTS){onend&&onend();return}
+  if(!voices.length) loadVoices();
+  speechSynthesis.cancel();
+  const tok=++speakToken;
+  const u=new SpeechSynthesisUtterance(text);
+  if(voice){u.voice=voice; u.lang=voice.lang||"zh-CN"} else u.lang="zh-CN";
+  u.rate=S.rate; u.pitch=1;
+  u.onend=()=>{if(tok===speakToken) onend&&onend()};
+  u.onerror=()=>{if(tok===speakToken) onend&&onend()};
+  try{speechSynthesis.resume()}catch(e){}
+  speechSynthesis.speak(u);
+}
+function stopSpeak(){speakToken++; if(TTS) speechSynthesis.cancel()}
+
+/* ---------- 练习 ---------- */
+let items=[], mode="", round=0, filter="全部", cur=-1, io=null, tick=null, startAt=0, nextAt=0;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
+function start(m,r){mode=m; round=r||0; filter="全部"; $("#home").hidden=true; $("#play").hidden=false; build(true)}
+function pool(){
+  if(mode==="fav") return QS.filter(q=>favs.has(q.id));
+  let p=QS.filter(q=>q.r==round);
+  if(filter!=="全部") p=p.filter(q=>q.c===filter);
+  return S.shuf?shuffle(p):p;
+}
+function buildFlow(){
+  const out=[];
+  [1,2,3].forEach(r=>{
+    const all=QS.filter(q=>q.r==r);
+    const cats=[...new Set(all.map(q=>q.c))].filter(c=>c!=="反问环节"), byC=cats.map(c=>shuffle(all.filter(q=>q.c===c)));
+    const pick=[]; let k=0;
+    if(r===1) pick.push(all.find(q=>q.q.startsWith("请用 2 分钟")));
+    const need=FLOW[r]-(r===3?1:0);
+    while(pick.length<need){const q=byC[k++%byC.length].shift(); if(q&&!pick.includes(q)) pick.push(q)}
+    if(r===3) pick.push(all.find(q=>q.q.startsWith("你还有什么问题")));
+    out.push({stage:r}); pick.forEach(q=>out.push(q));
+  });
+  out.push({stage:"end"});
+  return out;
+}
+function build(first){
+  stopSpeak(); clearInterval(tick); cur=-1;
+  items = mode==="flow"?buildFlow():pool();
+  const titles={round:`${ROUND[round]?.name} · ${ROUND[round]?.sub}`,flow:"完整面试流程",fav:"我的收藏"};
+  $("#pTitle").textContent=titles[mode];
+  $("#reshuf").hidden = mode==="fav";
+  renderChips();
+  const feed=$("#feed"); feed.innerHTML=""; feed.scrollTop=0;
+  if(!items.length){feed.innerHTML=`<div class="empty">${ms(mode==="fav"?"bookmark":"inbox")}<span>${mode==="fav"?"还没有收藏的题目。练习时点「收藏」即可加入这里。":"这个分类下暂无题目。"}</span></div>`;updCount();return}
+  let qn=0; const total=items.filter(x=>!x.stage).length;
+  items.forEach((it,i)=>{
+    const el=document.createElement("section"); el.className="card"; el.dataset.i=i;
+    if(it.stage){el.classList.add("stage"); el.innerHTML=stageHTML(it.stage); setRound(el,it.stage==="end"?0:it.stage)}
+    else {qn++; el.innerHTML=cardHTML(it,qn,total); setRound(el,it.r)}
+    feed.appendChild(el);
+  });
+  wire(); observe();
+  if(first) activate(0,S.auto);
+}
+function setRound(el,r){
+  if(!r){el.style.setProperty("--rc","var(--c-coral)");el.style.setProperty("--rs","var(--sel-soft)");el.style.setProperty("--rcc","var(--sel)");return}
+  el.style.setProperty("--rc",`var(${ROUND[r].c})`); el.style.setProperty("--rs",`var(${ROUND[r].s})`);
+  el.style.setProperty("--rcc",`var(${ROUND[r].c})`);
+}
+function stageHTML(s){
+  if(s==="end") return `<div class="flabel comp"><span class="ms">diamond</span>结束</div><div class="paper"><i class="hd a"></i><i class="hd b"></i><i class="hd c"></i><i class="hd d"></i><span class="eyebrow">${ms("task_alt")}全部完成</span><h2>面试结束</h2><p>三轮共 ${FLOW[1]+FLOW[2]+FLOW[3]} 题。把答得不顺的题收藏起来，再单独练一遍。</p><div class="btns"><button class="btn st" data-act="again">${ms("replay")}再来一场</button><button class="btn outl st" data-act="home">返回首页</button></div></div>`;
+  const R=ROUND[s];
+  const lines={1:"主要看基本功和作品集。先做自我介绍，再讲项目和设计原则。",2:"主要看项目深度和解决问题的能力。会追问细节，并给你一道现场设计题。",3:"主要看职业规划、团队协作和价值观，最后留出反问时间。"};
+  return `<div class="flabel comp"><span class="ms">diamond</span>${R.name} / 开场</div><div class="paper"><i class="hd a"></i><i class="hd b"></i><i class="hd c"></i><i class="hd d"></i><span class="eyebrow">${ms(R.i)}${R.name}</span><h2>${R.sub}</h2><p>${lines[s]}</p><ul class="facts"><li>${ms("person")}面试官：${R.who}</li><li>${ms("format_list_numbered")}本轮 ${FLOW[s]} 题</li><li>${ms("schedule")}每题建议作答 2–3 分钟</li><li>${ms("swipe_up")}上滑开始第一题</li></ul></div>`;
+}
+/* ---------- 答题框架：按题目类别给出结构化思路 ---------- */
+// viz: flow 步骤流 / star 四格 / grid 状态格 / vs 对比 / funnel 漏斗
+const FW = {
+"自我介绍与作品集":{look:"表达是否有结构，个人贡献是否清楚，项目和岗位是否匹配",viz:"flow",steps:[["badge","我是谁","一句话：年限、方向、所在业务"],["star","擅长什么","1–2 项核心能力，别罗列"],["work","代表项目","挑一个讲：目标、我的决策、结果"],["handshake","为什么是这里","把能力和岗位需求连起来"]],plus:["用数据或用户反馈说结果","主动留一个能被追问的细节"],avoid:["复述简历","只说“我们”不说“我”"],time:"2 分钟"},
+"交互基础":{look:"是否理解原则背后的原因，能否落到具体场景",viz:"flow",steps:[["menu_book","定义","用一句自己的话讲清概念"],["psychology","为什么","它解决用户的什么问题"],["smartphone","举例","一个真实产品里的用法"],["balance","边界","什么情况下不适用或要权衡"]],plus:["举自己项目里的例子","主动说出反例"],avoid:["背教科书定义","只举大厂案例不谈自己"],time:"1–2 分钟"},
+"视觉与设计规范":{look:"是否有系统化思维，能否让规范真正落地",viz:"flow",steps:[["palette","基础层","Token：颜色、字号、间距"],["widgets","组件层","状态、变体、使用规则"],["dashboard","模式层","常见页面和流程的组合"],["groups","治理","评审、版本、推广方式"]],plus:["说出规范带来的效率数据","提到暗色模式或多端适配"],avoid:["只讲视觉好看","忽略开发协作"],time:"2 分钟"},
+"设计流程与方法":{look:"是否有方法论，并能根据项目灵活取舍",viz:"flow",steps:[["search","理解","背景、目标、约束、指标"],["person_search","研究","用户与数据，找真问题"],["lightbulb","发散收敛","多方案对比，说清取舍"],["science","验证","原型测试或小流量实验"],["rocket_launch","交付复盘","走查、上线、看数据"]],plus:["说明哪一步可以省、为什么","配一个真实项目的时间线"],avoid:["流程完美但没有例子","把双钻当万能答案"],time:"2–3 分钟"},
+"用户研究基础":{look:"方法选择是否匹配问题，能否从研究中得出可行动的结论",viz:"vs",a:"定性（为什么）",b:"定量（有多少）",dims:[["访谈 · 可用性测试","问卷 · A/B · 埋点"],["样本小、挖动机","样本大、验规模"],["发现问题","确认优先级"]],plus:["说明样本怎么选","讲一个研究推翻假设的例子"],avoid:["引导性提问","只信用户说的，不看行为"],time:"1–2 分钟"},
+"工具与协作":{look:"工具服务于协作和效率，而不是炫技",viz:"flow",steps:[["construction","用什么","主力工具与原因"],["account_tree","怎么组织","文件、组件、命名规范"],["sync_alt","怎么协作","和产品、开发的交接方式"],["auto_awesome","提效","AI 或插件用在哪些环节"]],plus:["讲一个提效的具体数字","说明 AI 的边界"],avoid:["罗列工具清单","贬低其他工具"],time:"1 分钟"},
+"交互细节":{look:"考虑是否周全，能否覆盖边界和异常",viz:"grid",cells:[["check_circle","正常","默认与成功"],["inbox","空状态","首次 / 无结果"],["hourglass_top","加载","骨架屏 / 进度"],["error","错误","可理解、可恢复"],["data_array","极端数据","超长、超多、为 0"],["lock","权限","未登录 / 无权限"],["wifi_off","网络","弱网与离线"],["accessibility_new","无障碍","读屏、对比度、热区"]],plus:["挑 1–2 个状态讲具体处理","说出和开发约定的规则"],avoid:["只画理想状态","只罗列不展开"],time:"2 分钟"},
+"设计心理与法则":{look:"是否真正理解法则，能否用在设计决策里",viz:"flow",steps:[["menu_book","一句话定义","用大白话讲"],["visibility","生活中的例子","让人一听就懂"],["smartphone","产品中的应用","一个界面里的具体用法"],["warning","误用与边界","什么时候会被滥用或失效"]],plus:["结合自己的设计决策","提到伦理边界"],avoid:["只背名字和公式"],time:"1–2 分钟"},
+"项目深挖":{look:"是否真的做过、想过，追问时能否给出细节和依据",viz:"star",star:[["S","背景","业务目标、用户、约束"],["T","我的任务","我负责什么、难点在哪"],["A","关键决策","备选方案与取舍依据"],["R","结果","数据、反馈、复盘"]],plus:["准备 2–3 个废弃方案","能说出指标是怎么算的"],avoid:["夸大个人贡献","答不出数据来源"],time:"3–5 分钟"},
+"产品思维":{look:"能否从用户和商业两侧思考，做出有依据的判断",viz:"flow",steps:[["flag","目标","业务想达成什么"],["group","用户","谁在什么场景下用"],["diamond","价值","用户价值 × 商业价值"],["balance","取舍","成本、风险、优先级"],["monitoring","衡量","用什么指标判断成败"]],plus:["给出明确判断再解释","提到长期与短期的平衡"],avoid:["只谈体验不谈商业","两边都说好不下结论"],time:"2–3 分钟"},
+"数据与验证":{look:"是否懂实验设计，能否正确解读数据",viz:"flow",steps:[["help","假设","改什么、预期影响什么"],["target","指标","主指标 + 护栏指标"],["call_split","实验","分流、样本量、周期"],["fact_check","解读","显著性、分人群、排除干扰"]],plus:["提到定性补充","说明何时不适合做 A/B"],avoid:["只看一个数","把相关当因果"],time:"2 分钟"},
+"复杂场景与协作":{look:"在冲突和约束下，能否推动事情向前",viz:"flow",steps:[["hearing","先理解","对方的目标和顾虑"],["target","回到目标","用户和业务共同目标"],["alt_route","给出选项","2 个方案 + 各自代价"],["handshake","达成共识","明确决策人和下一步"]],plus:["讲一次真实经历","说明事后如何复盘"],avoid:["抱怨同事","只坚持不妥协"],time:"2 分钟"},
+"设计实战题":{look:"面对开放问题，能否有条理地定义问题、给出方案并衡量",viz:"flow",steps:[["help","澄清","目标、约束、成功标准"],["person","用户与场景","谁、何时、在哪、为什么"],["account_tree","拆解问题","找出 2–3 个关键痛点"],["draw","方案","1–2 个方案，讲清取舍"],["monitoring","衡量","上线后看哪些指标"]],plus:["先问 1–2 个澄清问题","边讲边画流程"],avoid:["一上来就画界面","方案很多但没有取舍"],time:"10–15 分钟"},
+"产品体验评析":{look:"有没有观察力，批评是否建设性、可落地",viz:"flow",steps:[["thumb_up","先肯定","它解决了什么问题"],["bug_report","指出问题","1–2 个具体痛点与原因"],["build","改进方案","可落地的修改"],["science","如何验证","用什么数据或测试"]],plus:["说出它为什么这样设计（业务原因）","最好是亲自用过的体验"],avoid:["只谈好不好看","全盘否定"],time:"3 分钟"},
+"竞品分析":{look:"能否用统一维度对比，并结合定位解释差异",viz:"vs",dims:[["目标用户","目标用户"],["核心流程","核心流程"],["效率与成本","效率与成本"],["情感与品牌","情感与品牌"]],plus:["最后给出明确判断","说出可以借鉴到自己产品的点"],avoid:["只列差异不解释原因","简单说谁更好"],time:"3 分钟"},
+"数据诊断":{look:"排查是否有顺序，能否从数据走到原因和行动",viz:"funnel",steps:[["verified","确认数据","埋点、口径、统计是否出错"],["filter_alt","拆维度","时间、渠道、版本、人群、平台"],["public","内外因素","发版、活动、竞品、节假日"],["location_searching","定位环节","漏斗中哪一步变化最大"],["task_alt","行动","定性补充，提出方案并验证"]],plus:["先说“我会先确认数据是否准确”","给出优先排查的假设"],avoid:["直接下结论改设计","只说一个原因"],time:"3 分钟"},
+"职业规划与动机":{look:"是否清楚自己要什么，动机是否和公司匹配",viz:"flow",steps:[["history","过去","我积累了什么"],["today","现在","为什么是这个机会"],["trending_up","未来","1–3 年具体目标"],["link","连接","我和公司如何互相成就"]],plus:["提前研究公司业务","目标具体到能力或成果"],avoid:["抱怨前公司","只谈薪资或只谈情怀"],time:"1–2 分钟"},
+"团队与领导力":{look:"协作方式、影响力与对人的理解",viz:"star",star:[["S","情境","团队与冲突背景"],["T","挑战","要解决的人或事"],["A","我的做法","沟通、机制、支持"],["R","结果","关系和结果的变化"]],plus:["体现对他人的尊重","讲出可复用的方法"],avoid:["把问题全推给别人","空谈管理理念"],time:"2 分钟"},
+"压力与情境题":{look:"面对压力是否冷静、负责、有方法",viz:"flow",steps:[["self_improvement","先稳住","不慌、不辩解"],["search","弄清事实","问题和影响有多大"],["checklist","行动","优先级、补救、沟通"],["autorenew","复盘","机制上如何避免再发生"]],plus:["主动承担责任","给出具体时间和动作"],avoid:["情绪化","否认问题"],time:"1–2 分钟"},
+"行业认知与视野":{look:"是否持续关注行业，有自己的判断",viz:"flow",steps:[["trending_up","趋势","一个具体的变化"],["insights","我的判断","它意味着什么"],["work","对工作的影响","设计方式会怎么变"],["school","我的准备","我正在做什么"]],plus:["举最近亲自体验的产品","观点有依据"],avoid:["只说热词","人云亦云"],time:"2 分钟"},
+"价值观与文化":{look:"价值观是否真实，是否和团队契合",viz:"flow",steps:[["favorite","我看重什么","一个关键词"],["history_edu","一个故事","真实经历证明它"],["groups","和团队的联系","它如何帮助团队"]],plus:["真诚，不说套话"],avoid:["答案过于完美"],time:"1 分钟"},
+"反问环节":{look:"是否认真了解过岗位，是否在思考入职后的工作",viz:"grid",cells:[["groups","团队","设计团队规模与分工"],["flag","期待","前半年最希望看到的成果"],["construction","挑战","团队当前最大的难题"],["trending_up","成长","优秀设计师的成长路径"]],plus:["准备 2–3 个问题","问题和刚才的面试内容呼应"],avoid:["问官网就能查到的信息","一上来问加班和福利"],time:"3–5 分钟"},
+"行为面试":{look:"过去的真实行为，最能预测未来表现",viz:"star",star:[["S","情境","什么时候、什么背景"],["T","任务","我要解决什么"],["A","行动","我具体做了什么（重点）"],["R","结果","量化结果 + 一句反思"]],plus:["行动部分占一半以上时间","结果尽量量化"],avoid:["讲成团队功劳","没有结果"],time:"2–3 分钟"}
+};
+const STEPC=["--c-blue","--c-green","--c-purple","--c-coral","--c-yellow"];
+function vizHTML(f,q){
+  if(f.viz==="flow") return `<ol class="v-flow">${f.steps.map((s,i)=>`<li style="--k:var(${STEPC[i%5]})"><span class="dot">${ms(s[0])}</span><div><b><i class="no">${String(i+1).padStart(2,"0")}</i>${s[1]}</b><small>${s[2]}</small></div></li>`).join("")}</ol>`;
+  if(f.viz==="funnel") return `<ol class="v-funnel">${f.steps.map((s,i)=>`<li style="--i:${i};--w:${100-i*11}%"><span class="bar"><i class="no">${String(i+1).padStart(2,"0")}</i>${s[1]}</span><small>${s[2]}</small></li>`).join("")}</ol>`;
+  if(f.viz==="star") return `<div class="v-star">${f.star.map((s,i)=>`<div style="--k:var(${STEPC[i]})"><em>${s[0]}</em><b>${s[1]}</b><small>${s[2]}</small></div>`).join("")}</div>`;
+  if(f.viz==="grid") return `<div class="v-grid">${f.cells.map((c,i)=>`<div style="--k:var(${STEPC[i%5]})">${ms(c[0])}<b>${c[1]}</b><small>${c[2]}</small></div>`).join("")}</div>`;
+  if(f.viz==="vs"){
+    let a=f.a,b=f.b; const m=q.q.match(/对比(.+?)和(.+?)的“/); if(m){a=m[1];b=m[2]}
+    return `<div class="v-vs"><div class="vh"><span style="--k:var(--c-blue)">${esc(a)}</span><i>vs</i><span style="--k:var(--c-purple)">${esc(b)}</span></div>${f.dims.map(d=>d[0]===d[1]?`<div class="vr one">${esc(d[0])}</div>`:`<div class="vr"><span>${esc(d[0])}</span><span>${esc(d[1])}</span></div>`).join("")}</div>`;
+  }
+  return "";
+}
+function tipHTML(q){
+  const f=FW[q.c]||FW["交互基础"];
+  const ci=Math.max(0,Object.keys(FW).indexOf(q.c))%8;
+  return `<div class="tip tc${ci}" ${S.tip?"":"hidden"}>
+    <div class="tip-h"><b>${ms("lightbulb")}答题思路</b><span class="time">${ms("schedule","sm")}${f.time}</span></div>
+    <div class="look"><span>${ms("visibility","sm")}考察点</span>${esc(f.look)}</div>
+    <div class="t-sec">答题结构</div>
+    ${vizHTML(f,q)}
+    <div class="key">${ms("format_quote","sm")}<div><span>本题要点</span>${(()=>{const raw=q.t||"结合自己的真实经历作答，结构清晰、有例子、有结果。"; return /STAR/.test(raw)?`<div class="core">${esc(raw)}</div>`:keyHTML(raw)})()}</div></div>
+    <div class="pa">
+      <div class="p"><span><i class="gl">+</i>加分项</span><ul>${f.plus.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+      <div class="a"><span><i class="gl">−</i>避坑</span><ul>${f.avoid.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+    </div>
+  </div>`;
+}
+
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+/* 把参考思路解析成可视结构：流程 / STAR / 要点 / 核心观点 */
+function keyHTML(raw){
+  let s=raw.trim().replace(/[。.]$/,""), lead="", body="", kind="";
+  const tidy=x=>x.trim().replace(/^[，,；;。]+|[，,；;。]+$/g,"");
+  if(/STAR/.test(s)){
+    const tail=(s.split(/[，。]最后/)[1]||"").trim();
+    kind="STAR 法";
+    body=`<div class="star"><div><b>S</b><span>情境</span></div><div><b>T</b><span>任务</span></div><div class="hot"><b>A</b><span>行动</span></div><div><b>R</b><span>结果</span></div></div><p class="note2">行动部分讲清「你」做了什么，结果尽量量化${tail?"，"+esc(tidy(tail.replace(/^补一句/,"再补一句"))):""}。</p>`;
+  } else {
+    const m=s.match(/^([^：:，。]{2,14})[：:](.+)$/);
+    if(m && !/例如/.test(m[1])){lead=m[1]; s=m[2]}
+    if(s.includes("→")){
+      const steps=s.split("→").map(tidy).filter(Boolean);
+      kind=`流程 · ${steps.length} 步`;
+      body=`<ol class="flow">${steps.map((x,i)=>`<li><span class="n">${i+1}</span><span>${esc(x)}</span></li>`).join("")}</ol>`;
+    } else {
+      // 先按分号拆主次，再按顿号 / 斜杠拆要点
+      const parts=s.split(/[；;]/).map(tidy).filter(Boolean);
+      const main=parts[0], rest=parts.slice(1);
+      let items=main.split(/[、\/]/).map(tidy).filter(Boolean);
+      if(items.length<3 && /，/.test(main) && main.split("，").length>=3) items=main.split("，").map(tidy).filter(Boolean);
+      if(items.length>=3 && items.every(x=>x.length<=22)){
+        kind=`要点 · ${items.length} 个`;
+        body=`<div class="pts">${items.map((x,i)=>`<span><i>${String(i+1).padStart(2,"0")}</i>${esc(x)}</span>`).join("")}</div>`;
+      } else {
+        kind="核心观点";
+        body=`<div class="core">${esc(main)}</div>`;
+      }
+      if(rest.length) body+=`<p class="note2">${esc(rest.join("；"))}</p>`;
+    }
+  }
+  return `${lead?`<p class="lead">${esc(lead)}</p>`:""}${body}`;
+}
+function cardHTML(q,n,t){
+  const R=ROUND[q.r];
+  return `<div class="flabel"><span class="ms">tag</span>${R.name} / ${esc(q.c)} / ${String(n).padStart(3,"0")}</div><div class="paper qp"><i class="hd a"></i><i class="hd b"></i><i class="hd c"></i><i class="hd d"></i>
+    <div class="cursor" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M2 1.5l11 5.2-4.6 1.4L6.6 13z"/></svg><span>${R.who}</span></div>
+    <div class="pin">
+    <div class="meta"><span class="tag">${ms(R.i,"sm fill")}${R.name}</span><span class="cat">${esc(q.c)}</span><span class="num">${n} / ${t}</span></div>
+    <div class="who">${ms("graphic_eq","fill")}${R.who}提问</div>
+    <p class="q">${esc(q.q)}</p>
+    ${noteHTML(q.id)}
+    <div class="spacer"></div>
+    ${tipHTML(q)}
+    </div>
+    <div class="foot">
+    <div class="clock">${ms("timer")}<span class="t">00:00</span><span class="n">作答用时</span></div>
+    <div class="acts">
+      <button class="act st" data-act="replay">${ms("replay")}重听</button>
+      <button class="act st" data-act="tip" aria-pressed="${S.tip}">${ms("lightbulb")}思路</button>
+      <button class="act fav st" data-act="fav" data-q="${q.id}" aria-pressed="${favs.has(q.id)}">${favs.has(q.id)?ms("edit_note")+"笔记":ms("bookmark")+"收藏"}</button>
+    </div>
+    </div>
+  </div>
+  <div class="hint">${n<t?ms("keyboard_arrow_up","sm")+"上滑下一题":"已是最后一题"}</div>`;
+}
+function wire(){
+  $("#feed").onclick=e=>{
+    const b=e.target.closest("[data-act]"); if(!b) return;
+    const card=b.closest(".card"), i=+card.dataset.i, it=items[i], a=b.dataset.act;
+    if(a==="replay") activate(i,true,true);
+    else if(a==="tip"){const t=card.querySelector(".tip"),p=card.querySelector(".pin");t.hidden=!t.hidden;b.setAttribute("aria-pressed",!t.hidden);clearNext(card);if(!t.hidden&&p) p.scrollTo({top:t.offsetTop-p.offsetTop-12,behavior:"smooth"})}
+    else if(a==="fav") toggleFav(it);
+    else if(a==="note") openNote(it);
+    else if(a==="again") build(true);
+    else if(a==="home") goHome();
+  };
+}
+function observe(){
+  io&&io.disconnect();
+  io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting&&en.intersectionRatio>.6){const i=+en.target.dataset.i; if(i!==cur) activate(i,S.auto)}})},{root:$("#feed"),threshold:[.6]});
+  document.querySelectorAll(".card").forEach(c=>io.observe(c));
+}
+function activate(i,read,force){
+  const card=document.querySelector(`.card[data-i="${i}"]`); if(!card) return;
+  cur=i; clearInterval(tick); nextAt=0;
+  document.querySelectorAll(".card.speaking").forEach(c=>c.classList.remove("speaking"));
+  updCount();
+  const it=items[i], clock=card.querySelector(".clock .t"), note=card.querySelector(".clock .n");
+  startAt=Date.now();
+  if(clock){clock.textContent="00:00"; note.textContent="作答用时"}
+  tick=setInterval(()=>{
+    if(!clock) return;
+    const s=(Date.now()-startAt)/1000|0; clock.textContent=String(s/60|0).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+    if(nextAt){const left=Math.ceil((nextAt-Date.now())/1000); note.textContent=`${left} 秒后自动下一题`; if(left<=0){nextAt=0;go(i+1)}}
+  },250);
+  const text=it.stage?stageSpeech(it.stage):it.q;
+  if(read||force){
+    card.classList.add("speaking");
+    speak(text,()=>{card.classList.remove("speaking"); if(cur===i){startAt=Date.now(); if(S.next>0&&!it.stage&&i<items.length-1) nextAt=Date.now()+S.next*1000}});
+  } else stopSpeak();
+}
+function stageSpeech(s){
+  if(s==="end") return "面试到这里就结束了，感谢你今天的时间，我们会尽快给你反馈。";
+  return {1:"你好，欢迎来参加面试。我是今天一面的面试官，主要聊聊你的作品集和设计基本功。",2:"你好，我是二面的面试官。今天我们会深入聊你的项目，也会请你现场做一道设计题。",3:"你好，我是终面的面试官。前面两轮反馈不错，今天我们轻松聊聊你的职业规划和想法。"}[s];
+}
+function clearNext(card){nextAt=0; const n=card.querySelector(".clock .n"); if(n) n.textContent="作答用时"}
+function go(i){const c=document.querySelector(`.card[data-i="${i}"]`); if(c) c.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"})}
+function updCount(){
+  const qs=items.filter(x=>!x.stage).length, done=items.slice(0,cur+1).filter(x=>!x.stage).length;
+  $("#pCount").textContent=qs?`第 ${done} 题 · 共 ${qs} 题`:"";
+  $("#progI").style.width=qs?(done/qs*100)+"%":"0";
+  const it=items[cur]; const r=it?(it.stage&&it.stage!=="end"?it.stage:it.r):round;
+  $("#play").style.setProperty("--rc", r&&ROUND[r]?`var(${ROUND[r].c})`:"var(--sel)");
+}
+function renderChips(){
+  const c=$("#chips"); c.innerHTML="";
+  if(mode!=="round"){c.hidden=true;return}
+  c.hidden=false;
+  const inR=QS.filter(q=>q.r==round);
+  ["全部",...new Set(inR.map(q=>q.c))].forEach(k=>{
+    const n=k==="全部"?inR.length:inR.filter(q=>q.c===k).length;
+    const b=document.createElement("button"); b.className="chip st"; b.innerHTML=`${ms("check","sm")}${k} · ${n}`; b.setAttribute("aria-pressed",k===filter);
+    b.onclick=()=>{filter=k; build(true)}; c.appendChild(b);
+  });
+}
+function goHome(){stopSpeak();clearInterval(tick);io&&io.disconnect();cur=-1;$("#play").hidden=true;$("#home").hidden=false;renderMods()}
+function syncBar(){
+  const a=$("#bAuto"),n=$("#bNext");
+  a.setAttribute("aria-pressed",S.auto); a.querySelector(".lb").textContent=S.auto?"朗读开":"朗读关"; a.querySelector(".ms").textContent=S.auto?"volume_up":"volume_off";
+  n.setAttribute("aria-pressed",S.next>0); n.querySelector(".lb").textContent=S.next>0?`${S.next} 秒翻页`:"自动翻页";
+}
+let snT;
+function snack(m){let t=$(".snack"); if(!t){t=document.createElement("div");t.className="snack";t.setAttribute("role","status");document.body.appendChild(t)} t.textContent=m; t.hidden=false; clearTimeout(snT); snT=setTimeout(()=>t.hidden=true,1600)}
+
+$("#back").onclick=goHome;
+$("#reshuf").onclick=()=>{build(true);snack("已重新出题")};
+$("#bAuto").onclick=()=>{S.auto=!S.auto; $("#sAuto").checked=S.auto; save(); if(!S.auto) stopSpeak(); else activate(cur,true)};
+$("#bNext").onclick=()=>{const o=[0,30,60,90,120]; S.next=o[(o.indexOf(S.next)+1)%o.length]; $("#sNext").value=String(S.next); save(); snack(S.next?`读完题目 ${S.next} 秒后翻到下一题`:"已关闭自动翻页")};
+$("#bStop").onclick=()=>{stopSpeak(); nextAt=0; document.querySelectorAll(".card.speaking").forEach(c=>c.classList.remove("speaking"))};
+document.addEventListener("keydown",e=>{if($("#play").hidden) return; if(e.key==="ArrowDown"){e.preventDefault();go(cur+1)} if(e.key==="ArrowUp"){e.preventDefault();go(cur-1)}});
+/* ---------- 收藏与框架笔记 ---------- */
+// 每题一条：{fav:true, n:{字段:内容}, updatedAt}；登录时存到个人私有空间（仅本人可见），否则存在本机浏览器
+let NOTES = store.get("notes",{});
+favs.forEach(id=>{ if(!NOTES[id]) NOTES[id]={fav:true,n:{}} });
+let ncol=null;
+function persistLocal(){ store.set("notes",NOTES); store.set("favs",Object.keys(NOTES).map(Number)); }
+function syncFavs(){
+  favs=new Set(Object.keys(NOTES).filter(k=>NOTES[k]&&NOTES[k].fav).map(Number));
+  persistLocal();
+  document.querySelectorAll('.act.fav').forEach(b=>{const id=+b.dataset.q; const on=favs.has(id); b.setAttribute("aria-pressed",on); b.innerHTML=on?`${ms("edit_note")}笔记`:`${ms("bookmark")}收藏`});
+  document.querySelectorAll('.mynote').forEach(el=>{el.outerHTML=noteHTML(+el.dataset.q)});
+  if(!$("#home").hidden) renderMods();
+}
+(async()=>{
+  try{
+    if(!window.claude||!claude.use) return;
+    const [db,user]=await Promise.all([claude.use("db"),claude.use("user")]);
+    if(!db||!user) return;
+    const uid=await user.id(); if(!uid) return;
+    const col=db.collection("data/users/"+uid);
+    col.onSnapshot(s=>{
+      ncol=col;
+      s.docChanges().forEach(c=>{
+        const id=+c.doc.id.slice(1); if(isNaN(id)) return;
+        if(c.type==="removed") delete NOTES[id];
+        else { const v=c.doc.data(); if(v&&v.fav) NOTES[id]={fav:true,n:v.n||{},updatedAt:v.updatedAt}; }
+      });
+      syncFavs();
+    },()=>{ncol=null});
+  }catch(e){}
+})();
+function noteFields(q){
+  const f=FW[q.c]||FW["交互基础"];
+  let rows=[];
+  if(f.viz==="flow"||f.viz==="funnel") rows=f.steps.map(s=>[s[1],s[2]]);
+  else if(f.viz==="star") rows=f.star.map(s=>[`${s[0]} ${s[1]}`,s[2]]);
+  else if(f.viz==="vs") rows=f.dims.map(d=>[d[0]===d[1]?d[0]:`${d[0]} / ${d[1]}`,"两边各写一句"]);
+  else rows=[["我会重点讲的部分",f.cells.map(c=>c[1]).join("、")]];
+  return [["一句话结论","先给答案，再展开"],...rows,["我的案例","用哪个项目或经历来佐证"],["易忘点","面试时容易漏掉的细节"]];
+}
+function noteHTML(id){
+  const it=NOTES[id]; const n=it&&it.n?Object.entries(it.n).filter(([k,v])=>v&&v.trim()):[];
+  if(!n.length) return `<div class="mynote" data-q="${id}" hidden></div>`;
+  return `<div class="mynote" data-q="${id}"><div class="mn-h">${ms("edit_note","sm")}我的笔记<button class="mn-e" data-act="note">编辑</button></div><dl>${n.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl></div>`;
+}
+let editing=null;
+function openNote(q){
+  editing=q; nextAt=0; stopSpeak();
+  const it=NOTES[q.id]||{n:{}};
+  const ci=Math.max(0,Object.keys(FW).indexOf(q.c))%8;
+  const sh=$("#sheet"); sh.className="sheet tip tc"+ci;
+  $("#shQ").textContent=q.q;
+  $("#shF").innerHTML=noteFields(q).map((r,i)=>`<label class="fld"><span><i class="no">${String(i+1).padStart(2,"0")}</i>${esc(r[0])}</span><textarea id="nf${i}" rows="2" data-k="${esc(r[0])}" placeholder="${esc(r[1])}">${esc((it.n||{})[r[0]]||"")}</textarea></label>`).join("");
+  $("#sheetBg").hidden=false; sh.hidden=false;
+  $("#shState").textContent = ncol?"仅你自己可见，换设备也能看到":"保存在这台设备的浏览器里";
+}
+function closeNote(){ $("#sheetBg").hidden=true; $("#sheet").hidden=true; editing=null }
+async function writeNote(id){
+  persistLocal();
+  if(!ncol) return true;
+  try{
+    if(NOTES[id]) await ncol.doc("q"+id).set(NOTES[id]); else await ncol.doc("q"+id).delete();
+    return true;
+  }catch(e){ return false }
+}
+async function toggleFav(q){
+  if(NOTES[q.id]){ openNote(q); return }
+  NOTES[q.id]={fav:true,n:{},updatedAt:new Date().toISOString()};
+  syncFavs(); openNote(q);
+  if(!(await writeNote(q.id))) snack("已收藏，暂时只保存在本机");
+}
+$("#shSave").onclick=async()=>{
+  if(!editing) return;
+  const n={}; $("#shF").querySelectorAll("textarea").forEach(t=>{ if(t.value.trim()) n[t.dataset.k]=t.value.trim() });
+  const id=editing.id;
+  NOTES[id]={fav:true,n,updatedAt:new Date().toISOString()};
+  closeNote(); syncFavs();
+  snack((await writeNote(id))?"笔记已保存":"已保存到本机，稍后再同步");
+};
+$("#shUnfav").onclick=async()=>{
+  if(!editing) return;
+  const id=editing.id; delete NOTES[id]; closeNote(); syncFavs();
+  await writeNote(id); snack("已从收藏移除");
+};
+$("#shClose").onclick=closeNote; $("#sheetBg").onclick=closeNote;
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&editing) closeNote() });
+
+renderMods(); bindSettings(); syncBar();
+/* ---------- PWA：安装与离线 ---------- */
+if("serviceWorker" in navigator && (location.protocol==="https:"||location.hostname==="localhost")){
+  window.addEventListener("load",()=>{navigator.serviceWorker.register("./sw.js").catch(()=>{})});
+}
+let deferredPrompt=null;
+const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone===true;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault(); deferredPrompt=e; if(!standalone) $("#installBtn").hidden=false});
+$("#installBtn").onclick=async()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); const r=await deferredPrompt.userChoice; deferredPrompt=null; $("#installBtn").hidden=true; if(r.outcome==="accepted") snack("已安装到桌面") };
+window.addEventListener("appinstalled",()=>{$("#installBtn").hidden=true});
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+if(isIOS && !standalone && !store.get("iosTipDone",false)) $("#iosTip").hidden=false;
+$("#iosClose").onclick=()=>{$("#iosTip").hidden=true; store.set("iosTipDone",true)};
+function netState(){let el=$(".offline"); if(navigator.onLine){el&&el.remove();return} if(!el){el=document.createElement("div");el.className="offline";el.textContent="离线模式 · 题库和笔记照常可用";document.body.appendChild(el)}}
+window.addEventListener("online",netState); window.addEventListener("offline",netState); netState();
+// 桌面快捷方式：#flow 直接开始完整面试，#fav 打开收藏
+if(location.hash==="#flow") start("flow"); else if(location.hash==="#fav") start("fav");
+ if(!TTS) applyVoice();
+</script>
+
+</body>
+</html>
